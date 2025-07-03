@@ -1,6 +1,12 @@
 @import "tailwindcss";
 @import "highlight.js/styles/github-dark.css";
 
+/* Global focus style for accessibility */
+:focus-visible {
+  outline: 2px solid #e50914;
+  outline-offset: 2px;
+}
+
 .to-red-600 {
     --tw-gradient-to: oklch(0.65 0.3 29.03);
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from-position), oklch(0.54 0.25 28.35) var(--tw-gradient-from-position), oklch(0.63 0.29 28.98) var(--tw-gradient-to-position));

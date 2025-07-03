@@ -23,15 +23,16 @@ export const ChatInput = ({
 
   return (
     <div
-      className={`absolute bottom-0 border-t bg-black/80 text-white backdrop-blur-sm border-red-600/10 ${
+      className={`absolute bottom-0 border-t text-white backdrop-blur-sm border-red-600/10 ${
         language === 'ar' ? 'left-0 right-64' : 'right-0 left-64'
       }`}
+      style={{ background: 'rgba(0,0,0,0.8)' }}
     >
       <div className="w-full max-w-3xl px-4 py-3 mx-auto">
         <div className="flex items-center gap-2 mb-2">
           <button
             type="button"
-            className="px-3 py-1.5 text-sm font-medium text-white rounded-lg bg-red-600 hover:opacity-90 focus:outline-none"
+            className="px-3 py-1.5 text-sm font-medium text-white rounded-lg bg-red-600 hover:opacity-90"
             onClick={() => {
               setInput('')
               setShowTopics(false)
@@ -42,7 +43,7 @@ export const ChatInput = ({
           <div className="relative">
             <button
               type="button"
-              className="px-3 py-1.5 text-sm font-medium text-white rounded-lg bg-red-600 hover:opacity-90 focus:outline-none"
+              className="px-3 py-1.5 text-sm font-medium text-white rounded-lg bg-red-600 hover:opacity-90"
               onClick={() => setShowTopics((s) => !s)}
             >
               {t.chooseTopic}
@@ -80,7 +81,7 @@ export const ChatInput = ({
               }}
               placeholder={t.placeholder}
 
-              className="w-full py-3 pl-4 pr-12 overflow-hidden text-sm text-white placeholder-gray-400 border rounded-lg shadow-lg resize-none border-red-600/20 bg-black/50 focus:outline-none focus:ring-2 focus:ring-red-600/50 focus:border-transparent"
+              className="w-full py-3 pl-4 pr-12 overflow-hidden text-sm text-white placeholder-[#888888] border rounded-lg shadow-lg resize-none border-red-600/20 bg-[#1a1a1a] focus:border-red-600 focus:shadow-[0_0_6px_#e50914]"
               rows={1}
               style={{ minHeight: '44px', maxHeight: '200px' }}
               onInput={(e) => {
@@ -92,7 +93,7 @@ export const ChatInput = ({
             <button
               type="submit"
               disabled={!input.trim() || isLoading}
-              className="absolute p-2 bg-red-600 text-white rounded -translate-y-1/2 right-2 top-1/2 hover:opacity-90 disabled:opacity-50 focus:outline-none"
+              className="absolute p-2 bg-red-600 text-white rounded -translate-y-1/2 right-2 top-1/2 hover:opacity-90 disabled:opacity-50"
             >
               <Send className="w-4 h-4" />
             </button>
