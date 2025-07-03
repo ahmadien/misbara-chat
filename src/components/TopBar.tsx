@@ -2,6 +2,7 @@ import * as React from 'react'
 import { styled } from '@mui/material/styles'
 import Switch from '@mui/material/Switch'
 import { useAppState } from '../store'
+import { Menu, X } from 'lucide-react'
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -95,7 +96,12 @@ const LanguageSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export function TopBar() {
+interface TopBarProps {
+  onToggleSidebar: () => void
+  isSidebarOpen: boolean
+}
+
+export function TopBar({ onToggleSidebar, isSidebarOpen }: TopBarProps) {
   const { language, setLanguage, theme, setTheme } = useAppState()
 
   return (
@@ -104,6 +110,12 @@ export function TopBar() {
         language === 'ar' ? 'left-0' : 'right-0'
       }`}
     >
+      <button
+        onClick={onToggleSidebar}
+        className="p-2 rounded-lg bg-red-600 text-white"
+      >
+        {isSidebarOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+      </button>
       <LanguageSwitch
         checked={language === 'ar'}
         onChange={() => setLanguage(language === 'en' ? 'ar' : 'en')}

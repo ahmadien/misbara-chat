@@ -23,7 +23,7 @@ export const ChatInput = ({
 
   return (
     <div
-      className={`absolute bottom-0 border-t bg-black/80 backdrop-blur-sm border-red-600/10 ${
+      className={`absolute bottom-0 border-t bg-white/80 dark:bg-black/80 text-black dark:text-white backdrop-blur-sm border-red-600/10 ${
         language === 'ar' ? 'left-0 right-64' : 'right-0 left-64'
       }`}
     >
@@ -31,7 +31,7 @@ export const ChatInput = ({
         <div className="flex items-center gap-2 mb-2">
           <button
             type="button"
-            className="px-3 py-1.5 text-sm font-medium text-white rounded-lg bg-gradient-to-r from-red-600 to-red-600 hover:opacity-90 focus:outline-none"
+            className="px-3 py-1.5 text-sm font-medium text-white rounded-lg bg-red-600 hover:opacity-90 focus:outline-none"
             onClick={() => {
               setInput('')
               setShowTopics(false)
@@ -42,13 +42,13 @@ export const ChatInput = ({
           <div className="relative">
             <button
               type="button"
-              className="px-3 py-1.5 text-sm font-medium text-white rounded-lg bg-gradient-to-r from-red-600 to-red-600 hover:opacity-90 focus:outline-none"
+              className="px-3 py-1.5 text-sm font-medium text-white rounded-lg bg-red-600 hover:opacity-90 focus:outline-none"
               onClick={() => setShowTopics((s) => !s)}
             >
               {t.chooseTopic}
             </button>
             {showTopics && (
-              <div className="absolute z-10 flex flex-col w-32 p-2 mt-1 space-y-1 bg-black rounded-lg shadow-lg">
+              <div className="absolute z-10 flex flex-col w-32 p-2 mt-1 space-y-1 bg-white dark:bg-black rounded-lg shadow-lg">
                 {topics.map((t) => (
                   <button
                     key={t}
@@ -57,7 +57,7 @@ export const ChatInput = ({
                       setInput(t)
                       setShowTopics(false)
                     }}
-                    className={`px-2 py-1 text-sm ${language === 'ar' ? 'text-right' : 'text-left'} text-white rounded hover:bg-black`}
+                    className={`px-2 py-1 text-sm ${language === 'ar' ? 'text-right' : 'text-left'} text-black dark:text-white rounded hover:bg-gray-200 dark:hover:bg-black`}
 
                   >
                     {t}
@@ -80,7 +80,7 @@ export const ChatInput = ({
               }}
               placeholder={t.placeholder}
 
-              className="w-full py-3 pl-4 pr-12 overflow-hidden text-sm text-white placeholder-gray-400 border rounded-lg shadow-lg resize-none border-red-600/20 bg-black/50 focus:outline-none focus:ring-2 focus:ring-red-600/50 focus:border-transparent"
+              className="w-full py-3 pl-4 pr-12 overflow-hidden text-sm text-black dark:text-white placeholder-gray-400 border rounded-lg shadow-lg resize-none border-red-600/20 bg-white/50 dark:bg-black/50 focus:outline-none focus:ring-2 focus:ring-red-600/50 focus:border-transparent"
               rows={1}
               style={{ minHeight: '44px', maxHeight: '200px' }}
               onInput={(e) => {
@@ -92,7 +92,7 @@ export const ChatInput = ({
             <button
               type="submit"
               disabled={!input.trim() || isLoading}
-              className="absolute p-2 text-red-600 transition-colors -translate-y-1/2 right-2 top-1/2 hover:text-red-400 disabled:text-gray-500 focus:outline-none"
+              className="absolute p-2 bg-red-600 text-white rounded -translate-y-1/2 right-2 top-1/2 hover:opacity-90 disabled:opacity-50 focus:outline-none"
             >
               <Send className="w-4 h-4" />
             </button>
