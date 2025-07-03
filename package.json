@@ -9,6 +9,9 @@
     "dev": "vinxi dev"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/material": "^7.2.0",
     "@sentry/react": "^9.5.0",
     "@sentry/vite-plugin": "^3.2.2",
     "@tailwindcss/postcss": "^4.0.7",

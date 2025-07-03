@@ -1,5 +1,8 @@
 import { Send } from 'lucide-react';
 import { useState } from 'react';
+import { useAppState } from '../store';
+import { translations } from '../utils';
+
 
 interface WelcomeScreenProps {
   input: string;
@@ -15,7 +18,9 @@ export const WelcomeScreen = ({
   isLoading
 }: WelcomeScreenProps) => {
   const [showTopics, setShowTopics] = useState(false)
-  const topics = ['Billing', 'Technical', 'General', 'Other']
+  const { language } = useAppState()
+  const t = translations[language]
+  const topics = t.topics
 
   return (
     <div className="flex items-center justify-center flex-1 px-4">
@@ -24,8 +29,7 @@ export const WelcomeScreen = ({
         <span className="text-white">TanStack</span> Chat
       </h1>
       <p className="w-2/3 mx-auto mb-6 text-lg text-gray-400">
-        You can ask me about anything, I might or might not have a good
-        answer, but you can still ask.
+        {t.welcomeSubtitle}
       </p>
       <div className="flex items-center justify-center gap-2 mb-4">
         <button
@@ -36,7 +40,8 @@ export const WelcomeScreen = ({
             setShowTopics(false)
           }}
         >
-          Describe your problem
+          {t.describeProblem}
+
         </button>
         <div className="relative">
           <button
@@ -44,7 +49,7 @@ export const WelcomeScreen = ({
             className="px-3 py-1.5 text-sm font-medium text-white rounded-lg bg-gradient-to-r from-orange-500 to-red-600 hover:opacity-90 focus:outline-none"
             onClick={() => setShowTopics((s) => !s)}
           >
-            Choose topic
+            {t.chooseTopic}
           </button>
           {showTopics && (
             <div className="absolute z-10 flex flex-col w-32 p-2 mt-1 space-y-1 bg-gray-800 rounded-lg shadow-lg">
@@ -56,7 +61,8 @@ export const WelcomeScreen = ({
                     setInput(t)
                     setShowTopics(false)
                   }}
-                  className="px-2 py-1 text-sm text-left text-white rounded hover:bg-gray-700"
+                  className={`px-2 py-1 text-sm ${language === 'ar' ? 'text-right' : 'text-left'} text-white rounded hover:bg-gray-700`}
+
                 >
                   {t}
                 </button>
@@ -76,7 +82,7 @@ export const WelcomeScreen = ({
                 handleSubmit(e)
               }
             }}
-            placeholder="Type something clever (or don't, we won't judge)..."
+            placeholder={t.placeholder}
             className="w-full py-3 pl-4 pr-12 overflow-hidden text-sm text-white placeholder-gray-400 border rounded-lg resize-none border-orange-500/20 bg-gray-800/50 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-transparent"
             rows={1}
             style={{ minHeight: '88px' }}

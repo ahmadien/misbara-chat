@@ -53,8 +53,9 @@ Clicking this button will create a new repo for you that looks exactly like this
 ### User Experience
 - 🎨 Modern UI with Tailwind CSS and Lucide icons
 - 🔍 Conversation management
-- 🔐 API key management
 - 📋 Markdown rendering with code highlighting
+- 🌐 Supports English and Arabic UI
+- 🌗 Light and dark themes with toggle switch
 
 ## Architecture
 
