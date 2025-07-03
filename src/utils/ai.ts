@@ -123,7 +123,8 @@ export const genAIResponse = createServerFn({ method: 'GET', response: 'raw' })
                 type: 'content_block_delta',
                 delta: { text }
               })
-              controller.enqueue(encoder.encode(json))
+              // Append a newline so the client can reliably split chunks
+              controller.enqueue(encoder.encode(json + '\n'))
             }
           }
           controller.close()

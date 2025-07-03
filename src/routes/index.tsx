@@ -97,6 +97,7 @@ function Home() {
       const decoder = new TextDecoder()
 
       let done = false
+      let buffer = ''
       let newMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant' as const,
@@ -105,18 +106,27 @@ function Home() {
       while (!done) {
         const out = await reader.read()
         done = out.done
-        if (!done) {
-          try {
-            const json = JSON.parse(decoder.decode(out.value))
-            if (json.type === 'content_block_delta') {
-              newMessage = {
-                ...newMessage,
-                content: newMessage.content + json.delta.text,
+        if (out.value) {
+          buffer += decoder.decode(out.value)
+          let newlineIndex = buffer.indexOf('\n')
+          while (newlineIndex !== -1) {
+            const line = buffer.slice(0, newlineIndex).trim()
+            buffer = buffer.slice(newlineIndex + 1)
+            if (line) {
+              try {
+                const json = JSON.parse(line)
+                if (json.type === 'content_block_delta') {
+                  newMessage = {
+                    ...newMessage,
+                    content: newMessage.content + json.delta.text,
+                  }
+                  setPendingMessage(newMessage)
+                }
+              } catch (e) {
+                console.error('Error parsing streaming response:', e)
               }
-              setPendingMessage(newMessage)
             }
-          } catch (e) {
-            console.error('Error parsing streaming response:', e)
+            newlineIndex = buffer.indexOf('\n')
           }
         }
       }
