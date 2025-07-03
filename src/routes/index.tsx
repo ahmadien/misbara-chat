@@ -38,7 +38,11 @@ function Home() {
   }, [])
 
   // Memoize messages to prevent unnecessary re-renders
-  const messages = useMemo(() => currentConversation?.messages || [], [currentConversation]);
+  const messages = useMemo(
+    () => currentConversation?.messages || [],
+    [currentConversation]
+  )
+  const hasMessages = messages.length > 0
 
   // Local state
   const [input, setInput] = useState('')
@@ -235,8 +239,9 @@ function Home() {
   }, [input, isLoading, createTitleFromInput, currentConversationId, createNewConversation, addMessage, processAIResponse, setLoading]);
 
   const handleNewChat = useCallback(() => {
-    createNewConversation()
-  }, [createNewConversation]);
+    // Reset the current conversation so the welcome screen is shown
+    setCurrentConversationId(null)
+  }, [setCurrentConversationId])
 
   const handleDeleteChat = useCallback(async (id: string) => {
     await deleteConversation(id)
@@ -282,7 +287,7 @@ function Home() {
         {error && (
           <p className="w-full max-w-3xl p-4 mx-auto font-bold text-red-600">{error}</p>
         )}
-        {currentConversationId ? (
+        {hasMessages ? (
           <>
             {/* Messages */}
             <div
@@ -308,7 +313,7 @@ function Home() {
             />
           </>
         ) : (
-          <WelcomeScreen 
+          <WelcomeScreen
             input={input}
             setInput={setInput}
             handleSubmit={handleSubmit}
