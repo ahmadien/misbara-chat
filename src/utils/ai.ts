@@ -1,5 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
-import { Anthropic } from '@anthropic-ai/sdk'
+import OpenAI from 'openai'
 
 export interface Message {
   id: string
@@ -60,19 +60,17 @@ export const genAIResponse = createServerFn({ method: 'GET', response: 'raw' })
   // .middleware([loggingMiddleware])
   .handler(async ({ data }) => {
     // Check for API key in environment variables
-    const apiKey = process.env.ANTHROPIC_API_KEY || import.meta.env.VITE_ANTHROPIC_API_KEY
+    const apiKey = process.env.OPENAI_API_KEY || import.meta.env.VITE_OPENAI_API_KEY
 
     if (!apiKey) {
       throw new Error(
-        'Missing API key: Please set VITE_ANTHROPIC_API_KEY in your environment variables or VITE_ANTHROPIC_API_KEY in your .env file.'
+        'Missing API key: Please set VITE_OPENAI_API_KEY in your environment variables or VITE_OPENAI_API_KEY in your .env file.'
       )
     }
-    
-    // Create Anthropic client with proper configuration
-    const anthropic = new Anthropic({
+
+    const openai = new OpenAI({
       apiKey,
-      // Add proper timeout to avoid connection issues
-      timeout: 30000 // 30 seconds timeout
+      timeout: 30000
     })
 
     // Filter out error messages and empty messages
@@ -106,14 +104,33 @@ export const genAIResponse = createServerFn({ method: 'GET', response: 'raw' })
     })
 
     try {
-      const response = await anthropic.messages.stream({
-        model: 'claude-3-5-sonnet-20241022',
-        max_tokens: 4096,
-        system: systemPrompt,
-        messages: formattedMessages,
+      const stream = await openai.chat.completions.create({
+        model: 'gpt-4o',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          ...formattedMessages,
+        ],
+        stream: true,
       })
 
-      return new Response(response.toReadableStream())
+      const encoder = new TextEncoder()
+      const readable = new ReadableStream({
+        async start(controller) {
+          for await (const chunk of stream) {
+            const text = chunk.choices[0]?.delta?.content
+            if (text) {
+              const json = JSON.stringify({
+                type: 'content_block_delta',
+                delta: { text }
+              })
+              controller.enqueue(encoder.encode(json))
+            }
+          }
+          controller.close()
+        }
+      })
+
+      return new Response(readable)
     } catch (error) {
       console.error('Error in genAIResponse:', error)
       
@@ -125,10 +142,10 @@ export const genAIResponse = createServerFn({ method: 'GET', response: 'raw' })
         if (error.message.includes('rate limit')) {
           errorMessage = 'Rate limit exceeded. Please try again in a moment.'
         } else if (error.message.includes('Connection error') || error.name === 'APIConnectionError') {
-          errorMessage = 'Connection to Anthropic API failed. Please check your internet connection and API key.'
+          errorMessage = 'Connection to OpenAI API failed. Please check your internet connection and API key.'
           statusCode = 503 // Service Unavailable
         } else if (error.message.includes('authentication')) {
-          errorMessage = 'Authentication failed. Please check your Anthropic API key.'
+          errorMessage = 'Authentication failed. Please check your OpenAI API key.'
           statusCode = 401 // Unauthorized
         } else {
           errorMessage = error.message

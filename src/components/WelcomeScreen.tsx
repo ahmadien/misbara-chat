@@ -1,4 +1,5 @@
 import { Send } from 'lucide-react';
+import { useState } from 'react';
 
 interface WelcomeScreenProps {
   input: string;
@@ -7,14 +8,18 @@ interface WelcomeScreenProps {
   isLoading: boolean;
 }
 
-export const WelcomeScreen = ({ 
-  input, 
-  setInput, 
-  handleSubmit, 
-  isLoading 
-}: WelcomeScreenProps) => (
-  <div className="flex items-center justify-center flex-1 px-4">
-    <div className="w-full max-w-3xl mx-auto text-center">
+export const WelcomeScreen = ({
+  input,
+  setInput,
+  handleSubmit,
+  isLoading
+}: WelcomeScreenProps) => {
+  const [showTopics, setShowTopics] = useState(false)
+  const topics = ['Billing', 'Technical', 'General', 'Other']
+
+  return (
+    <div className="flex items-center justify-center flex-1 px-4">
+      <div className="w-full max-w-3xl mx-auto text-center">
       <h1 className="mb-4 text-6xl font-bold text-transparent uppercase bg-gradient-to-r from-orange-500 to-red-600 bg-clip-text">
         <span className="text-white">TanStack</span> Chat
       </h1>
@@ -22,6 +27,44 @@ export const WelcomeScreen = ({
         You can ask me about anything, I might or might not have a good
         answer, but you can still ask.
       </p>
+      <div className="flex items-center justify-center gap-2 mb-4">
+        <button
+          type="button"
+          className="px-3 py-1.5 text-sm font-medium text-white rounded-lg bg-gradient-to-r from-orange-500 to-red-600 hover:opacity-90 focus:outline-none"
+          onClick={() => {
+            setInput('')
+            setShowTopics(false)
+          }}
+        >
+          Describe your problem
+        </button>
+        <div className="relative">
+          <button
+            type="button"
+            className="px-3 py-1.5 text-sm font-medium text-white rounded-lg bg-gradient-to-r from-orange-500 to-red-600 hover:opacity-90 focus:outline-none"
+            onClick={() => setShowTopics((s) => !s)}
+          >
+            Choose topic
+          </button>
+          {showTopics && (
+            <div className="absolute z-10 flex flex-col w-32 p-2 mt-1 space-y-1 bg-gray-800 rounded-lg shadow-lg">
+              {topics.map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  onClick={() => {
+                    setInput(t)
+                    setShowTopics(false)
+                  }}
+                  className="px-2 py-1 text-sm text-left text-white rounded hover:bg-gray-700"
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
       <form onSubmit={handleSubmit}>
         <div className="relative max-w-xl mx-auto">
           <textarea
@@ -49,4 +92,5 @@ export const WelcomeScreen = ({
       </form>
     </div>
   </div>
-); 
+  )
+}
