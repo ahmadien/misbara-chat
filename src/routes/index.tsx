@@ -48,6 +48,7 @@ function Home() {
   const [editingTitle, setEditingTitle] = useState('')
   const messagesContainerRef = useRef<HTMLDivElement>(null)
   const [pendingMessage, setPendingMessage] = useState<Message | null>(null)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [error, setError] = useState<string | null>(null);
 
   const scrollToBottom = useCallback(() => {
@@ -250,23 +251,26 @@ function Home() {
   }, [updateConversationTitle]);
 
   return (
-    <div className="relative flex h-screen bg-black text-white">
-      <TopBar />
+    <div className="relative flex h-screen bg-white text-black dark:bg-black dark:text-white">
+      <TopBar onToggleSidebar={() => setIsSidebarOpen(s => !s)} isSidebarOpen={isSidebarOpen} />
 
 
       {/* Sidebar */}
-      <Sidebar 
-        conversations={conversations}
-        currentConversationId={currentConversationId}
-        handleNewChat={handleNewChat}
-        setCurrentConversationId={setCurrentConversationId}
-        handleDeleteChat={handleDeleteChat}
-        editingChatId={editingChatId}
-        setEditingChatId={setEditingChatId}
-        editingTitle={editingTitle}
-        setEditingTitle={setEditingTitle}
-        handleUpdateChatTitle={handleUpdateChatTitle}
-      />
+      {isSidebarOpen && (
+        <Sidebar
+          conversations={conversations}
+          currentConversationId={currentConversationId}
+          handleNewChat={handleNewChat}
+          setCurrentConversationId={setCurrentConversationId}
+          handleDeleteChat={handleDeleteChat}
+          editingChatId={editingChatId}
+          setEditingChatId={setEditingChatId}
+          editingTitle={editingTitle}
+          setEditingTitle={setEditingTitle}
+          handleUpdateChatTitle={handleUpdateChatTitle}
+          onClose={() => setIsSidebarOpen(false)}
+        />
+      )}
 
       {/* Main Content */}
       <div className="flex flex-col flex-1">
