@@ -17,7 +17,7 @@ export const ChatMessage = ({ message }: { message: Message }) => (
       {message.role === 'assistant' ? (
         <AiIcon className="flex-shrink-0 w-8 h-8 ml-4" />
       ) : (
-        <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 text-sm font-medium text-black dark:text-white bg-white dark:bg-black rounded-lg">
+        <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 text-sm font-medium text-white bg-black rounded-lg">
           Y
         </div>
       )}

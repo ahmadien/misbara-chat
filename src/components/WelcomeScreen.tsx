@@ -24,7 +24,7 @@ export const WelcomeScreen = ({
   const topics = t.topics
 
   return (
-    <div className="flex items-center justify-center flex-1 px-4 text-black dark:text-white">
+    <div className="flex items-center justify-center flex-1 px-4 text-white">
       <div className="w-full max-w-3xl mx-auto text-center">
       <div className="flex justify-center mb-4">
         <BrandLogo className="w-20 h-auto" />
@@ -53,7 +53,7 @@ export const WelcomeScreen = ({
             {t.chooseTopic}
           </button>
           {showTopics && (
-            <div className="absolute z-10 flex flex-col w-32 p-2 mt-1 space-y-1 bg-white dark:bg-black rounded-lg shadow-lg">
+            <div className="absolute z-10 flex flex-col w-32 p-2 mt-1 space-y-1 bg-black rounded-lg shadow-lg">
               {topics.map((t) => (
                 <button
                   key={t}
@@ -62,7 +62,7 @@ export const WelcomeScreen = ({
                     setInput(t)
                     setShowTopics(false)
                   }}
-                  className={`px-2 py-1 text-sm ${language === 'ar' ? 'text-right' : 'text-left'} text-black dark:text-white rounded hover:bg-gray-200 dark:hover:bg-black`}
+                  className={`px-2 py-1 text-sm ${language === 'ar' ? 'text-right' : 'text-left'} text-white rounded hover:bg-gray-700`}
 
                 >
                   {t}
@@ -84,7 +84,7 @@ export const WelcomeScreen = ({
               }
             }}
             placeholder={t.placeholder}
-            className="w-full py-3 pl-4 pr-12 overflow-hidden text-sm text-black dark:text-white placeholder-gray-400 border rounded-lg resize-none border-red-600/20 bg-white/50 dark:bg-black/50 focus:outline-none focus:ring-2 focus:ring-red-600/50 focus:border-transparent"
+            className="w-full py-3 pl-4 pr-12 overflow-hidden text-sm text-white placeholder-gray-400 border rounded-lg resize-none border-red-600/20 bg-black/50 focus:outline-none focus:ring-2 focus:ring-red-600/50 focus:border-transparent"
             rows={1}
             style={{ minHeight: '88px' }}
           />
