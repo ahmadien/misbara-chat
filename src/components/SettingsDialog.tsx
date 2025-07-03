@@ -31,7 +31,7 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={(e) => {
       if (e.target === e.currentTarget) handleClose()
     }}>
-      <div className="bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+      <div className="bg-black rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
         <div className="p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-2xl font-semibold text-white">Settings</h2>
@@ -54,7 +54,7 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
                 </label>
                 <button
                   onClick={() => setIsAddingPrompt(true)}
-                  className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-gradient-to-r from-orange-500 to-red-600 rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-gradient-to-r from-red-600 to-red-600 rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-red-600"
                 >
                   <PlusCircle className="w-4 h-4" />
                   Add Prompt
@@ -62,19 +62,19 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
               </div>
 
               {isAddingPrompt && (
-                <div className="p-3 mb-4 space-y-3 rounded-lg bg-gray-700/50">
+                <div className="p-3 mb-4 space-y-3 rounded-lg bg-black/50">
                   <input
                     type="text"
                     value={promptForm.name}
                     onChange={(e) => setPromptForm(prev => ({ ...prev, name: e.target.value }))}
                     placeholder="Prompt name..."
-                    className="w-full px-3 py-2 text-sm text-white bg-gray-700 border border-gray-600 rounded-lg focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                    className="w-full px-3 py-2 text-sm text-white bg-black border border-red-600 rounded-lg focus:border-red-600 focus:ring-1 focus:ring-red-600"
                   />
                   <textarea
                     value={promptForm.content}
                     onChange={(e) => setPromptForm(prev => ({ ...prev, content: e.target.value }))}
                     placeholder="Enter prompt content..."
-                    className="w-full h-32 px-3 py-2 text-sm text-white bg-gray-700 border border-gray-600 rounded-lg focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                    className="w-full h-32 px-3 py-2 text-sm text-white bg-black border border-red-600 rounded-lg focus:border-red-600 focus:ring-1 focus:ring-red-600"
                   />
                   <div className="flex justify-end gap-2">
                     <button
@@ -85,7 +85,7 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
                     </button>
                     <button
                       onClick={handleAddPrompt}
-                      className="px-3 py-1.5 text-sm font-medium text-white bg-gradient-to-r from-orange-500 to-red-600 rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                      className="px-3 py-1.5 text-sm font-medium text-white bg-gradient-to-r from-red-600 to-red-600 rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-red-600"
                     >
                       Save Prompt
                     </button>
@@ -95,7 +95,7 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
 
               <div className="space-y-2">
                 {prompts.map((prompt) => (
-                  <div key={prompt.id} className="flex items-center justify-between p-3 rounded-lg bg-gray-700/50">
+                  <div key={prompt.id} className="flex items-center justify-between p-3 rounded-lg bg-black/50">
                     <div className="flex-1 min-w-0 mr-4">
                       <h4 className="text-sm font-medium text-white truncate">{prompt.name}</h4>
                       <p className="text-xs text-gray-400 truncate">{prompt.content}</p>
@@ -108,7 +108,7 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
                           checked={prompt.is_active}
                           onChange={() => setPromptActive(prompt.id, !prompt.is_active)}
                         />
-                        <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500"></div>
+                        <div className="w-11 h-6 bg-black peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-red-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
                       </label>
                       <button
                         onClick={() => deletePrompt(prompt.id)}
@@ -136,7 +136,7 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
             </button>
             <button
               onClick={handleClose}
-              className="px-4 py-2 text-sm font-medium text-white rounded-lg bg-gradient-to-r from-orange-500 to-red-600 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="px-4 py-2 text-sm font-medium text-white rounded-lg bg-gradient-to-r from-red-600 to-red-600 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-red-600"
             >
               Close
             </button>

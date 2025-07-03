@@ -250,7 +250,7 @@ function Home() {
   }, [updateConversationTitle]);
 
   return (
-    <div className={`relative flex h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`}> 
+    <div className="relative flex h-screen bg-black text-white">
       <TopBar />
 
 
@@ -271,7 +271,7 @@ function Home() {
       {/* Main Content */}
       <div className="flex flex-col flex-1">
         {error && (
-          <p className="w-full max-w-3xl p-4 mx-auto font-bold text-orange-500">{error}</p>
+          <p className="w-full max-w-3xl p-4 mx-auto font-bold text-red-600">{error}</p>
         )}
         {currentConversationId ? (
           <>

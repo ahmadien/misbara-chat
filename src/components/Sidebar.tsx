@@ -31,11 +31,11 @@ export const Sidebar = ({
   const t = translations[language]
 
   return (
-  <div className="flex flex-col w-64 bg-gray-800 border-r border-gray-700">
-    <div className="flex items-center justify-between p-4 border-b border-gray-700">
+  <div className="flex flex-col w-64 bg-black border-r border-red-600">
+    <div className="flex items-center justify-between p-4 border-b border-red-600">
       <button
         onClick={handleNewChat}
-        className="flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-white rounded-lg bg-gradient-to-r from-orange-500 to-red-600 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-orange-500"
+        className="flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-white rounded-lg bg-gradient-to-r from-red-600 to-red-600 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-red-600"
       >
         <PlusCircle className="w-4 h-4" />
         {t.newChat}
@@ -47,8 +47,8 @@ export const Sidebar = ({
       {conversations.map((chat) => (
         <div
           key={chat.id}
-          className={`group flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-gray-700/50 ${
-            chat.id === currentConversationId ? 'bg-gray-700/50' : ''
+          className={`group flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-black/50 ${
+            chat.id === currentConversationId ? 'bg-black/50' : ''
           }`}
           onClick={() => setCurrentConversationId(chat.id)}
         >
