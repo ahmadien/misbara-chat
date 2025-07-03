@@ -33,7 +33,7 @@ export const Sidebar = ({
   const t = translations[language]
 
   return (
-  <div className="flex flex-col w-64 bg-gray-900 text-white border-r border-gray-700 shadow-lg">
+  <div className="flex flex-col w-64 text-white border-r shadow-lg" style={{background:'#0d0d0d',borderColor:'#e50914'}}>
     <div className="flex items-center justify-between p-4 border-b border-red-600">
       <button
         onClick={handleNewChat}
