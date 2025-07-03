@@ -1,4 +1,4 @@
-import { PlusCircle, MessageCircle, Trash2, Edit2 } from 'lucide-react';
+import { PlusCircle, MessageCircle, Trash2, Edit2, X } from 'lucide-react';
 import { useAppState } from '../store';
 import { translations } from '../utils';
 
@@ -13,6 +13,7 @@ interface SidebarProps {
   editingTitle: string;
   setEditingTitle: (title: string) => void;
   handleUpdateChatTitle: (id: string, title: string) => void;
+  onClose: () => void;
 }
 
 export const Sidebar = ({
@@ -25,20 +26,24 @@ export const Sidebar = ({
   setEditingChatId,
   editingTitle,
   setEditingTitle,
-  handleUpdateChatTitle
+  handleUpdateChatTitle,
+  onClose
 }: SidebarProps) => {
   const { language } = useAppState()
   const t = translations[language]
 
   return (
-  <div className="flex flex-col w-64 bg-black border-r border-red-600">
+  <div className="flex flex-col w-64 bg-white dark:bg-black text-black dark:text-white border-r border-red-600">
     <div className="flex items-center justify-between p-4 border-b border-red-600">
       <button
         onClick={handleNewChat}
-        className="flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-white rounded-lg bg-gradient-to-r from-red-600 to-red-600 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-red-600"
+        className="flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-white rounded-lg bg-red-600 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-red-600"
       >
         <PlusCircle className="w-4 h-4" />
         {t.newChat}
+      </button>
+      <button onClick={onClose} className="p-1 text-white bg-red-600 rounded-lg">
+        <X className="w-4 h-4" />
       </button>
     </div>
 
@@ -47,12 +52,12 @@ export const Sidebar = ({
       {conversations.map((chat) => (
         <div
           key={chat.id}
-          className={`group flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-black/50 ${
-            chat.id === currentConversationId ? 'bg-black/50' : ''
+          className={`group flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-black/50 ${
+            chat.id === currentConversationId ? 'bg-gray-200 dark:bg-black/50' : ''
           }`}
           onClick={() => setCurrentConversationId(chat.id)}
         >
-          <MessageCircle className="w-4 h-4 text-gray-400" />
+          <MessageCircle className="w-4 h-4 text-gray-500 dark:text-gray-400" />
           {editingChatId === chat.id ? (
             <input
               type="text"
@@ -74,11 +79,11 @@ export const Sidebar = ({
                   setEditingTitle('')
                 }
               }}
-              className="flex-1 text-sm text-white bg-transparent focus:outline-none"
+              className="flex-1 text-sm text-black dark:text-white bg-transparent focus:outline-none"
               autoFocus
             />
           ) : (
-            <span className="flex-1 text-sm text-gray-300 truncate">
+            <span className="flex-1 text-sm text-gray-700 dark:text-gray-300 truncate">
               {chat.title}
             </span>
           )}
@@ -89,7 +94,7 @@ export const Sidebar = ({
                 setEditingChatId(chat.id)
                 setEditingTitle(chat.title)
               }}
-              className="p-1 text-gray-400 hover:text-white"
+              className="p-1 text-gray-500 dark:text-gray-400 hover:text-white"
             >
               <Edit2 className="w-3 h-3" />
             </button>
@@ -98,7 +103,7 @@ export const Sidebar = ({
                 e.stopPropagation()
                 handleDeleteChat(chat.id)
               }}
-              className="p-1 text-gray-400 hover:text-red-500"
+              className="p-1 text-gray-500 dark:text-gray-400 hover:text-red-500"
             >
               <Trash2 className="w-3 h-3" />
             </button>
