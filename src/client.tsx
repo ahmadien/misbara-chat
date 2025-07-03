@@ -17,4 +17,5 @@ const AppComponent = process.env.SENTRY_DSN
     })
   : StartClient
 
-hydrateRoot(document, <AppComponent router={router} />)
+const container = document.getElementById('root') ?? document
+hydrateRoot(container, <AppComponent router={router} />)
