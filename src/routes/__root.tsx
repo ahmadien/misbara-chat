@@ -31,24 +31,12 @@ export const Route = createRootRoute({
   }),
 
   component: () => (
-    <RootDocument>
-      <Outlet />
-    </RootDocument>
+    <>
+      <HeadContent />
+      <ConvexClientProvider>
+        <Outlet />
+        <Scripts />
+      </ConvexClientProvider>
+    </>
   ),
 })
-
-function RootDocument({ children }: { children: React.ReactNode }) {
-  return (
-    <html>
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <ConvexClientProvider>
-          {children}
-        </ConvexClientProvider>
-        <Scripts />
-      </body>
-    </html>
-  )
-}
