@@ -1,13 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react'
-import { Settings } from 'lucide-react'
-import { 
-  SettingsDialog, 
-  ChatMessage, 
-  LoadingIndicator, 
-  ChatInput, 
-  Sidebar, 
-  WelcomeScreen 
+import {
+  ChatMessage,
+  LoadingIndicator,
+  ChatInput,
+  Sidebar,
+  WelcomeScreen
 } from '../components'
 import { useConversations, useAppState, store, actions } from '../store'
 import { genAIResponse, type Message } from '../utils'
@@ -29,14 +27,10 @@ function Home() {
   // Memoize messages to prevent unnecessary re-renders
   const messages = useMemo(() => currentConversation?.messages || [], [currentConversation]);
 
-  // Check if Anthropic API key is defined
-  const isAnthropicKeyDefined = Boolean(import.meta.env.VITE_ANTHROPIC_API_KEY);
-
   // Local state
   const [input, setInput] = useState('')
   const [editingChatId, setEditingChatId] = useState<string | null>(null)
   const [editingTitle, setEditingTitle] = useState('')
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const messagesContainerRef = useRef<HTMLDivElement>(null)
   const [pendingMessage, setPendingMessage] = useState<Message | null>(null)
   const [error, setError] = useState<string | null>(null);
@@ -232,15 +226,6 @@ function Home() {
 
   return (
     <div className="relative flex h-screen bg-gray-900">
-      {/* Settings Button */}
-      <div className="absolute z-50 top-5 right-5">
-        <button
-          onClick={() => setIsSettingsOpen(true)}
-          className="flex items-center justify-center w-10 h-10 text-white transition-opacity rounded-full bg-gradient-to-r from-orange-500 to-red-600 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-orange-500"
-        >
-          <Settings className="w-5 h-5" />
-        </button>
-      </div>
 
       {/* Sidebar */}
       <Sidebar 
@@ -258,12 +243,6 @@ function Home() {
 
       {/* Main Content */}
       <div className="flex flex-col flex-1">
-        {!isAnthropicKeyDefined && (
-          <div className="w-full max-w-3xl px-2 py-2 mx-auto mt-4 mb-2 font-medium text-center text-white bg-orange-500 rounded-md text-sm">
-            <p>This app requires an Anthropic API key to work properly. Update your <code>.env</code> file or get a <a href='https://console.anthropic.com/settings/keys' className='underline'>new Anthropic key</a>.</p>
-            <p>For local development, use <a href='https://www.netlify.com/products/dev/' className='underline'>netlify dev</a> to automatically load environment variables.</p>
-          </div>
-        )}
         {error && (
           <p className="w-full max-w-3xl p-4 mx-auto font-bold text-orange-500">{error}</p>
         )}
@@ -302,11 +281,6 @@ function Home() {
         )}
       </div>
 
-      {/* Settings Dialog */}
-      <SettingsDialog
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
-      />
     </div>
   )
 }
