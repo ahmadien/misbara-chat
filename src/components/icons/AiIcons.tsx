@@ -1,42 +1,11 @@
 import * as React from 'react'
+import animatedLogoUrl from './animated_ai_logo.svg'
+import originalLogoUrl from './misbara_original_logo.svg'
 
-export const AnimatedAiIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 176 168" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-    <defs>
-      <linearGradient id="strokeGradient" x1="100%" y1="100%" x2="0%" y2="0%">
-        <stop offset="0%" stopColor="#ff3b3b" />
-        <stop offset="50%" stopColor="#f5d300" />
-        <stop offset="100%" stopColor="#00c2ff" />
-      </linearGradient>
-    </defs>
-    <path id="shapePath" d="M85.2555 0.399902L36.9355 15.5389C35.2565 16.0629 33.6205 17.9059 33.2995 19.6339L28.0745 47.7279C27.7525 49.4559 26.4055 51.8149 25.0805 52.9689L2.65051 72.5139C1.32651 73.6699 0.586517 76.0099 1.00652 77.7179L13.0765 126.711C13.4965 128.417 14.8885 130.799 16.1705 132.001L52.3565 165.968C53.6375 167.171 56.0445 167.681 57.7035 167.102L85.3865 157.43C87.0465 156.851 89.7645 156.844 91.4265 157.415L119.516 167.076C121.179 167.648 123.577 167.119 124.846 165.902L161.295 130.938C162.563 129.722 163.946 127.329 164.365 125.622L175.852 78.9509C176.271 77.2429 175.554 74.8759 174.257 73.6889L151.724 52.9769C150.402 51.8169 149.038 49.4569 148.693 47.7339L142.797 18.3449C142.451 16.6209 140.787 14.8079 139.099 14.3139L91.3875 0.382904C90.5535 0.139904 89.4585 0.0188904 88.3615 0.0188904C87.2365 0.0188904 86.1085 0.145902 85.2555 0.399902Z" />
-    <use href="#shapePath" fill="none" stroke="url(#strokeGradient)" strokeWidth="2" />
-    <use href="#shapePath" fill="none" stroke="#ff3b3b" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="40 2000">
-      <animate attributeName="stroke-dashoffset" from="0" to="-2040" dur="4s" begin="0s" repeatCount="indefinite" />
-    </use>
-    <use href="#shapePath" fill="none" stroke="#f5d300" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="40 2000">
-      <animate attributeName="stroke-dashoffset" from="0" to="-2040" dur="4s" begin="1.3s" repeatCount="indefinite" />
-    </use>
-    <use href="#shapePath" fill="none" stroke="#00c2ff" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="40 2000">
-      <animate attributeName="stroke-dashoffset" from="0" to="-2040" dur="4s" begin="2.6s" repeatCount="indefinite" />
-    </use>
-  </svg>
-)
+export const AnimatedAiIcon = (
+  props: React.ImgHTMLAttributes<HTMLImageElement>
+) => <img src={animatedLogoUrl} alt="Misbara animated logo" {...props} />
 
-export const AiIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 176 168" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" {...props}>
-    <mask id="mask0_4525_1007606" style={{ maskType: 'luminance' }} maskUnits="userSpaceOnUse" x="0" y="0" width="176" height="168">
-      <path d="M85.2555 0.399902L36.9355 15.5389C35.2565 16.0629 33.6205 17.9059 33.2995 19.6339L28.0745 47.7279C27.7525 49.4559 26.4055 51.8149 25.0805 52.9689L2.65051 72.5139C1.32651 73.6699 0.586517 76.0099 1.00652 77.7179L13.0765 126.711C13.4965 128.417 14.8885 130.799 16.1705 132.001L52.3565 165.968C53.6375 167.171 56.0445 167.681 57.7035 167.102L85.3865 157.43C87.0465 156.851 89.7645 156.844 91.4265 157.415L119.516 167.076C121.179 167.648 123.577 167.119 124.846 165.902L161.295 130.938C162.563 129.722 163.946 127.329 164.365 125.622L175.852 78.9509C176.271 77.2429 175.554 74.8759 174.257 73.6889L151.724 52.9769C150.402 51.8169 149.038 49.4569 148.693 47.7339L142.797 18.3449C142.451 16.6209 140.787 14.8079 139.099 14.3139L91.3875 0.382904C90.5535 0.139904 89.4585 0.0188904 88.3615 0.0188904C87.2365 0.0188904 86.1085 0.145902 85.2555 0.399902Z" fill="white" />
-    </mask>
-    <g mask="url(#mask0_4525_1007606)">
-      <rect x="0.560486" y="-0.558594" width="176" height="169" fill="url(#pattern0_4525_1007606)" />
-    </g>
-    <defs>
-      <pattern id="pattern0_4525_1007606" patternContentUnits="objectBoundingBox" width="1" height="1">
-        <use xlinkHref="#image0_4525_1007606" transform="scale(0.00568182 0.00591716)" />
-      </pattern>
-      <image id="image0_4525_1007606" width="176" height="169" preserveAspectRatio="none" xlinkHref="data:image/png;base64,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" />
-    </defs>
-  </svg>
-)
-
+export const AiIcon = (
+  props: React.ImgHTMLAttributes<HTMLImageElement>
+) => <img src={originalLogoUrl} alt="Misbara logo" {...props} />
