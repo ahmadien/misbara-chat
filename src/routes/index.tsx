@@ -9,6 +9,7 @@ import {
   TopBar
 
 } from '../components'
+import { GoSidebarExpand } from 'react-icons/go'
 import { useConversations, useAppState, store, actions } from '../store'
 import { genAIResponse, type Message } from '../utils'
 
@@ -24,7 +25,7 @@ function Home() {
     addMessage,
   } = useConversations()
   
-  const { isLoading, setLoading, getActivePrompt, language, theme } = useAppState()
+  const { isLoading, setLoading, getActivePrompt, language } = useAppState()
 
   useEffect(() => {
     document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr'
@@ -32,12 +33,9 @@ function Home() {
   }, [language])
 
   useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-  }, [theme])
+    document.documentElement.classList.add('dark')
+    document.body.classList.add('dark')
+  }, [])
 
   // Memoize messages to prevent unnecessary re-renders
   const messages = useMemo(() => currentConversation?.messages || [], [currentConversation]);
@@ -251,12 +249,12 @@ function Home() {
   }, [updateConversationTitle]);
 
   return (
-    <div className="relative flex h-screen bg-white text-black dark:bg-black dark:text-white">
-      <TopBar onToggleSidebar={() => setIsSidebarOpen(s => !s)} isSidebarOpen={isSidebarOpen} />
+    <div className="relative flex h-screen bg-black text-white">
+      <TopBar />
 
 
       {/* Sidebar */}
-      {isSidebarOpen && (
+      {isSidebarOpen ? (
         <Sidebar
           conversations={conversations}
           currentConversationId={currentConversationId}
@@ -270,6 +268,13 @@ function Home() {
           handleUpdateChatTitle={handleUpdateChatTitle}
           onClose={() => setIsSidebarOpen(false)}
         />
+      ) : (
+        <button
+          onClick={() => setIsSidebarOpen(true)}
+          className="fixed top-1/2 left-0 z-10 -translate-y-1/2 rounded-r-lg bg-red-600 p-2 text-white"
+        >
+          <GoSidebarExpand className="w-5 h-5" />
+        </button>
       )}
 
       {/* Main Content */}

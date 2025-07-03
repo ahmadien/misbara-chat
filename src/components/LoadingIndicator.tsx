@@ -6,7 +6,7 @@ export const LoadingIndicator = () => (
       <AnimatedAiIcon className="w-8 h-8 flex-shrink-0" />
       <div className="relative flex-shrink-0 w-8 h-8">
         <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-red-600 to-red-600 to-red-600 animate-[spin_2s_linear_infinite]"></div>
-        <div className="absolute inset-[2px] rounded-lg bg-white dark:bg-black flex items-center justify-center text-black dark:text-white">
+        <div className="absolute inset-[2px] rounded-lg bg-black flex items-center justify-center text-white">
           <div className="relative flex items-center justify-center w-full h-full rounded-lg bg-gradient-to-r from-red-600 to-red-600">
             <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-red-600 to-red-600 animate-pulse"></div>
             <span className="relative z-10 text-sm font-medium text-white">

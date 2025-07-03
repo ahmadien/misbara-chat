@@ -33,7 +33,7 @@ export const Sidebar = ({
   const t = translations[language]
 
   return (
-  <div className="flex flex-col w-64 bg-white dark:bg-black text-black dark:text-white border-r border-red-600">
+  <div className="flex flex-col w-64 bg-gray-900 text-white border-r border-gray-700 shadow-lg">
     <div className="flex items-center justify-between p-4 border-b border-red-600">
       <button
         onClick={handleNewChat}
@@ -52,12 +52,12 @@ export const Sidebar = ({
       {conversations.map((chat) => (
         <div
           key={chat.id}
-          className={`group flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-black/50 ${
-            chat.id === currentConversationId ? 'bg-gray-200 dark:bg-black/50' : ''
+        className={`group flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-gray-700 ${
+            chat.id === currentConversationId ? 'bg-gray-700' : ''
           }`}
           onClick={() => setCurrentConversationId(chat.id)}
         >
-          <MessageCircle className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+          <MessageCircle className="w-4 h-4 text-gray-400" />
           {editingChatId === chat.id ? (
             <input
               type="text"
@@ -79,11 +79,11 @@ export const Sidebar = ({
                   setEditingTitle('')
                 }
               }}
-              className="flex-1 text-sm text-black dark:text-white bg-transparent focus:outline-none"
+              className="flex-1 text-sm text-white bg-transparent focus:outline-none"
               autoFocus
             />
           ) : (
-            <span className="flex-1 text-sm text-gray-700 dark:text-gray-300 truncate">
+            <span className="flex-1 text-sm text-gray-300 truncate">
               {chat.title}
             </span>
           )}
@@ -94,7 +94,7 @@ export const Sidebar = ({
                 setEditingChatId(chat.id)
                 setEditingTitle(chat.title)
               }}
-              className="p-1 text-gray-500 dark:text-gray-400 hover:text-white"
+              className="p-1 text-gray-400 hover:text-white"
             >
               <Edit2 className="w-3 h-3" />
             </button>
@@ -103,7 +103,7 @@ export const Sidebar = ({
                 e.stopPropagation()
                 handleDeleteChat(chat.id)
               }}
-              className="p-1 text-gray-500 dark:text-gray-400 hover:text-red-500"
+              className="p-1 text-gray-400 hover:text-red-500"
             >
               <Trash2 className="w-3 h-3" />
             </button>
