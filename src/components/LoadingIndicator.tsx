@@ -1,6 +1,9 @@
+import { AnimatedAiIcon } from './icons/AiIcons'
+
 export const LoadingIndicator = () => (
   <div className="px-6 py-6 bg-gradient-to-r from-red-600/5 to-red-600/5">
     <div className="flex items-start w-full max-w-3xl gap-4 mx-auto">
+      <AnimatedAiIcon className="w-8 h-8 flex-shrink-0" />
       <div className="relative flex-shrink-0 w-8 h-8">
         <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-red-600 to-red-600 to-red-600 animate-[spin_2s_linear_infinite]"></div>
         <div className="absolute inset-[2px] rounded-lg bg-white dark:bg-black flex items-center justify-center text-black dark:text-white">

@@ -2,6 +2,7 @@ import { Send } from 'lucide-react';
 import { useState } from 'react';
 import { useAppState } from '../store';
 import { translations } from '../utils';
+import { BrandLogo } from './icons/BrandLogo';
 
 
 interface WelcomeScreenProps {
@@ -25,9 +26,9 @@ export const WelcomeScreen = ({
   return (
     <div className="flex items-center justify-center flex-1 px-4 text-black dark:text-white">
       <div className="w-full max-w-3xl mx-auto text-center">
-      <h1 className="mb-4 text-6xl font-bold text-transparent uppercase bg-gradient-to-r from-red-600 to-red-600 bg-clip-text">
-        <span className="dark:text-white text-black">TanStack</span> Chat
-      </h1>
+      <div className="flex justify-center mb-4">
+        <BrandLogo className="w-20 h-auto" />
+      </div>
       <p className="w-2/3 mx-auto mb-6 text-lg text-gray-400">
         {t.welcomeSubtitle}
       </p>
