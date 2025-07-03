@@ -54,6 +54,7 @@ export const ChatInput = ({
                       setShowTopics(false)
                     }}
                     className={`px-2 py-1 text-sm ${language === 'ar' ? 'text-right' : 'text-left'} text-white rounded hover:bg-gray-700`}
+
                   >
                     {t}
                   </button>
@@ -74,6 +75,7 @@ export const ChatInput = ({
                 }
               }}
               placeholder={t.placeholder}
+
               className="w-full py-3 pl-4 pr-12 overflow-hidden text-sm text-white placeholder-gray-400 border rounded-lg shadow-lg resize-none border-orange-500/20 bg-gray-800/50 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-transparent"
               rows={1}
               style={{ minHeight: '44px', maxHeight: '200px' }}

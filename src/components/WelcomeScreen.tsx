@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useAppState } from '../store';
 import { translations } from '../utils';
 
+
 interface WelcomeScreenProps {
   input: string;
   setInput: (value: string) => void;
@@ -40,6 +41,7 @@ export const WelcomeScreen = ({
           }}
         >
           {t.describeProblem}
+
         </button>
         <div className="relative">
           <button
@@ -60,6 +62,7 @@ export const WelcomeScreen = ({
                     setShowTopics(false)
                   }}
                   className={`px-2 py-1 text-sm ${language === 'ar' ? 'text-right' : 'text-left'} text-white rounded hover:bg-gray-700`}
+
                 >
                   {t}
                 </button>

@@ -7,6 +7,7 @@ import {
   Sidebar,
   WelcomeScreen,
   TopBar
+
 } from '../components'
 import { useConversations, useAppState, store, actions } from '../store'
 import { genAIResponse, type Message } from '../utils'
@@ -241,6 +242,7 @@ function Home() {
   return (
     <div className={`relative flex h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`}> 
       <TopBar />
+
 
       {/* Sidebar */}
       <Sidebar 
