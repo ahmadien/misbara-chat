@@ -17,5 +17,13 @@ const AppComponent = process.env.SENTRY_DSN
     })
   : StartClient
 
-const container = document.getElementById('root') ?? document
+// Ensure there is a valid DOM element for React to hydrate
+let container = document.getElementById('root') as HTMLElement | null
+
+if (!container) {
+  container = document.createElement('div')
+  container.id = 'root'
+  document.body.appendChild(container)
+}
+
 hydrateRoot(container, <AppComponent router={router} />)
