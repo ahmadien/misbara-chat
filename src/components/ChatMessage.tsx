@@ -3,6 +3,7 @@ import rehypeRaw from 'rehype-raw'
 import rehypeSanitize from 'rehype-sanitize'
 import rehypeHighlight from 'rehype-highlight'
 import type { Message } from '../utils/ai'
+import { AiIcon } from './icons/AiIcons'
 
 export const ChatMessage = ({ message }: { message: Message }) => (
   <div
@@ -14,9 +15,7 @@ export const ChatMessage = ({ message }: { message: Message }) => (
   >
     <div className="flex items-start w-full max-w-3xl gap-4 mx-auto">
       {message.role === 'assistant' ? (
-        <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 ml-4 text-sm font-medium text-white rounded-lg bg-gradient-to-r from-red-600 to-red-600">
-          AI
-        </div>
+        <AiIcon className="flex-shrink-0 w-8 h-8 ml-4" />
       ) : (
         <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 text-sm font-medium text-white bg-black rounded-lg">
           Y
