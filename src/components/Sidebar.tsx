@@ -27,7 +27,7 @@ export const Sidebar = ({
   setEditingTitle,
   handleUpdateChatTitle
 }: SidebarProps) => {
-  const { language, setLanguage } = useAppState()
+  const { language } = useAppState()
   const t = translations[language]
 
   return (
@@ -40,14 +40,6 @@ export const Sidebar = ({
         <PlusCircle className="w-4 h-4" />
         {t.newChat}
       </button>
-      <select
-        value={language}
-        onChange={(e) => setLanguage(e.target.value as 'en' | 'ar')}
-        className="px-2 py-1 text-sm text-white bg-gray-700 rounded"
-      >
-        <option value="en">EN</option>
-        <option value="ar">AR</option>
-      </select>
     </div>
 
     {/* Chat List */}

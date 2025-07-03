@@ -5,7 +5,8 @@ import {
   LoadingIndicator,
   ChatInput,
   Sidebar,
-  WelcomeScreen
+  WelcomeScreen,
+  TopBar
 } from '../components'
 import { useConversations, useAppState, store, actions } from '../store'
 import { genAIResponse, type Message } from '../utils'
@@ -22,12 +23,20 @@ function Home() {
     addMessage,
   } = useConversations()
   
-  const { isLoading, setLoading, getActivePrompt, language } = useAppState()
+  const { isLoading, setLoading, getActivePrompt, language, theme } = useAppState()
 
   useEffect(() => {
     document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr'
     document.documentElement.lang = language
   }, [language])
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  }, [theme])
 
   // Memoize messages to prevent unnecessary re-renders
   const messages = useMemo(() => currentConversation?.messages || [], [currentConversation]);
@@ -123,7 +132,7 @@ function Home() {
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant' as const,
-        content: 'Sorry, I encountered an error generating a response. Please set the required API keys in your environment variables.',
+        content: 'Sorry, I encountered an error generating a response.',
       }
       await addMessage(conversationId, errorMessage)
     }
@@ -230,7 +239,8 @@ function Home() {
   }, [updateConversationTitle]);
 
   return (
-    <div className="relative flex h-screen bg-gray-900">
+    <div className={`relative flex h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`}> 
+      <TopBar />
 
       {/* Sidebar */}
       <Sidebar 

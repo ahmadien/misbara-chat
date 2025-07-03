@@ -22,6 +22,7 @@ export interface State {
   currentConversationId: string | null
   isLoading: boolean
   language: 'en' | 'ar'
+  theme: 'light' | 'dark'
 }
 
 const initialState: State = {
@@ -29,7 +30,8 @@ const initialState: State = {
   conversations: [],
   currentConversationId: null,
   isLoading: false,
-  language: 'en'
+  language: 'en',
+  theme: 'dark'
 }
 
 export const store = new Store<State>(initialState)
@@ -146,6 +148,10 @@ export const actions = {
 
   setLanguage: (lang: 'en' | 'ar') => {
     store.setState(state => ({ ...state, language: lang }))
+  },
+
+  setTheme: (theme: 'light' | 'dark') => {
+    store.setState(state => ({ ...state, theme }))
   }
 }
 
@@ -158,5 +164,6 @@ export const selectors = {
   getConversations: (state: State) => state.conversations,
   getCurrentConversationId: (state: State) => state.currentConversationId,
   getIsLoading: (state: State) => state.isLoading,
-  getLanguage: (state: State) => state.language
+  getLanguage: (state: State) => state.language,
+  getTheme: (state: State) => state.theme
 }
