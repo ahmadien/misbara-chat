@@ -1,2 +1,2 @@
 [template.environment]
-VITE_ANTHROPIC_API_KEY="Add your Anthropic API key here"
+VITE_OPENAI_API_KEY="Add your OpenAI API key here"

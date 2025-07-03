@@ -1,4 +1,6 @@
 import { PlusCircle, MessageCircle, Trash2, Edit2 } from 'lucide-react';
+import { useAppState } from '../store';
+import { translations } from '../utils';
 
 interface SidebarProps {
   conversations: Array<{ id: string; title: string }>;
@@ -13,27 +15,39 @@ interface SidebarProps {
   handleUpdateChatTitle: (id: string, title: string) => void;
 }
 
-export const Sidebar = ({ 
-  conversations, 
-  currentConversationId, 
-  handleNewChat, 
-  setCurrentConversationId, 
-  handleDeleteChat, 
-  editingChatId, 
-  setEditingChatId, 
-  editingTitle, 
-  setEditingTitle, 
-  handleUpdateChatTitle 
-}: SidebarProps) => (
+export const Sidebar = ({
+  conversations,
+  currentConversationId,
+  handleNewChat,
+  setCurrentConversationId,
+  handleDeleteChat,
+  editingChatId,
+  setEditingChatId,
+  editingTitle,
+  setEditingTitle,
+  handleUpdateChatTitle
+}: SidebarProps) => {
+  const { language, setLanguage } = useAppState()
+  const t = translations[language]
+
+  return (
   <div className="flex flex-col w-64 bg-gray-800 border-r border-gray-700">
-    <div className="p-4 border-b border-gray-700">
+    <div className="flex items-center justify-between p-4 border-b border-gray-700">
       <button
         onClick={handleNewChat}
-        className="flex items-center justify-center w-full gap-2 px-3 py-2 text-sm font-medium text-white rounded-lg bg-gradient-to-r from-orange-500 to-red-600 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-orange-500"
+        className="flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-white rounded-lg bg-gradient-to-r from-orange-500 to-red-600 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-orange-500"
       >
         <PlusCircle className="w-4 h-4" />
-        New Chat
+        {t.newChat}
       </button>
+      <select
+        value={language}
+        onChange={(e) => setLanguage(e.target.value as 'en' | 'ar')}
+        className="px-2 py-1 text-sm text-white bg-gray-700 rounded"
+      >
+        <option value="en">EN</option>
+        <option value="ar">AR</option>
+      </select>
     </div>
 
     {/* Chat List */}
@@ -101,4 +115,5 @@ export const Sidebar = ({
       ))}
     </div>
   </div>
-); 
+);
+}

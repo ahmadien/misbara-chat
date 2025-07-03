@@ -24,7 +24,7 @@ A modern chat template built with TanStack Router and Claude AI integration feat
 - [Styling](#styling)
 - [Error Monitoring](#error-monitoring)
 - [Environment Configuration](#environment-configuration)
-  - [Anthropic API Key](#anthropic-api-key)
+  - [OpenAI API Key](#openai-api-key)
   - [Convex Configuration (Optional)](#convex-configuration-optional)
 - [Routing](#routing)
   - [Adding A Route](#adding-a-route)
@@ -55,6 +55,7 @@ Clicking this button will create a new repo for you that looks exactly like this
 - 🔍 Conversation management
 - 🔐 API key management
 - 📋 Markdown rendering with code highlighting
+- 🌐 Supports English and Arabic UI
 
 ## Architecture
 
@@ -64,14 +65,14 @@ Clicking this button will create a new repo for you that looks exactly like this
 - **State Management**: TanStack Store
 - **Database**: Convex (optional)
 - **Styling**: Tailwind CSS 4
-- **AI Integration**: Anthropic's Claude API
+ - **AI Integration**: OpenAI GPT models
 - **Build Tool**: Vite 6 with Vinxi
 
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) v20.9+
 - (optional) [nvm](https://github.com/nvm-sh/nvm) for Node version management
-- [Anthropic Claude API](https://www.anthropic.com/api)
+- [OpenAI API](https://platform.openai.com/docs/introduction)
 - (optional) [Convex Account](https://dashboard.convex.dev/signup) for database storage
 
 ## Project Structure
@@ -132,7 +133,7 @@ Follow these steps to set up and run the project locally:
    ```
    
    Then edit the `.env` file with your credentials:
-   - Required: Add your Anthropic API key (`VITE_ANTHROPIC_API_KEY`)
+   - Required: Add your OpenAI API key (`VITE_OPENAI_API_KEY`)
    - Optional: Add Convex URL if using database features (`VITE_CONVEX_URL`)
    - Optional: Add Sentry credentials for error monitoring (`VITE_SENTRY_DSN`, `SENTRY_AUTH_TOKEN`)
 
@@ -180,7 +181,7 @@ You can also use [Netlify Dev](https://www.netlify.com/products/dev/) to run you
   nvm use 20.9
   ```
 
-- **API Key Issues**: If you encounter errors related to the Anthropic API, verify that your API key is correctly set in the `.env` file and that you have sufficient credits in your Anthropic account.
+- **API Key Issues**: If you encounter errors related to the OpenAI API, verify that your API key is correctly set in the `.env` file and that you have sufficient credits in your OpenAI account.
 
 - **Port Conflicts**: If port 3000 is already in use, the development server will automatically try to use the next available port. Check your terminal output for the correct URL.
 
@@ -228,13 +229,13 @@ If the Sentry environment variables are not defined, the application will run wi
 
 **Important**: Never commit your `.env` file to version control as it contains sensitive information. The `.env` file is already included in the project's `.gitignore` file to prevent accidental commits.
 
-### Anthropic API Key
+### OpenAI API Key
 
-You can generate and manage your Anthropic API keys through the [Anthropic Console](https://console.anthropic.com/login).
+You can generate and manage your OpenAI API keys through the [OpenAI Console](https://platform.openai.com/account/api-keys).
 
 ```
 # .env file
-VITE_ANTHROPIC_API_KEY=your_anthropic_api_key
+VITE_OPENAI_API_KEY=your_openai_api_key
 ```
 
 ### Convex Configuration (Optional)
@@ -404,5 +405,5 @@ You can find out everything you need to know on how to use TanStack Store in the
 
 - Explore more about deploying with Netlify in the [Netlify documentation](https://docs.netlify.com/).
 - You can learn more about TanStack in the [TanStack documentation](https://tanstack.com).
-- Learn more about integrating AI with Anthropic's Claude API in the [Anthropic API documentation](https://console.anthropic.com/docs).
+- Learn more about integrating AI with OpenAI in the [OpenAI API documentation](https://platform.openai.com/docs/introduction).
 - Learn about using Convex for database storage in the [Convex documentation](https://docs.convex.dev/).
