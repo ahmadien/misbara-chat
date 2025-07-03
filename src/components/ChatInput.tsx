@@ -22,7 +22,11 @@ export const ChatInput = ({
   const topics = t.topics
 
   return (
-    <div className="absolute bottom-0 right-0 border-t left-64 bg-gray-900/80 backdrop-blur-sm border-orange-500/10">
+    <div
+      className={`absolute bottom-0 border-t bg-gray-900/80 backdrop-blur-sm border-orange-500/10 ${
+        language === 'ar' ? 'left-0 right-64' : 'right-0 left-64'
+      }`}
+    >
       <div className="w-full max-w-3xl px-4 py-3 mx-auto">
         <div className="flex items-center gap-2 mb-2">
           <button
