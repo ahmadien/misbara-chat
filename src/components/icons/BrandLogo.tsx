@@ -1,6 +1,6 @@
-import * as React from 'react';
-import LogoSvg from './misbara_full_logo.svg?react';
+import * as React from 'react'
+import logoUrl from './misbara_full_logo.svg'
 
 export const BrandLogo = (
-  props: React.SVGProps<SVGSVGElement>
-) => <LogoSvg {...props} />;
+  props: React.ImgHTMLAttributes<HTMLImageElement>
+) => <img src={logoUrl} alt="Misbara logo" {...props} />
