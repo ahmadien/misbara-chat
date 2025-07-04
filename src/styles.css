@@ -243,3 +243,26 @@ html {
   padding: 0;
   border-radius: 0;
 }
+
+/* Specific table styling within chat messages */
+.chat-message table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1em;
+}
+
+.chat-message th,
+.chat-message td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+[dir='rtl'] .chat-message th,
+[dir='rtl'] .chat-message td {
+  text-align: right;
+}
+
+[dir='ltr'] .chat-message th,
+[dir='ltr'] .chat-message td {
+  text-align: left;
+}
