@@ -23,7 +23,7 @@ export const ChatMessage = ({ message }: { message: Message }) => (
       tabIndex={0}
     >
       {message.role === 'assistant' ? (
-        <AiIcon className="flex-shrink-0 w-8 h-8 ml-4" />
+        <AiIcon className="flex-shrink-0 w-12 h-12 ml-4" />
       ) : (
         <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 text-sm font-medium text-white bg-black rounded-lg">
           Y

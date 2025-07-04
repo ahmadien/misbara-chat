@@ -86,8 +86,8 @@ export const ChatInput = ({
               placeholder={t.placeholder}
 
               className="w-full py-3 pl-4 pr-12 overflow-hidden text-sm text-white placeholder-[#888888] border rounded-lg shadow-lg resize-none border-red-600/20 bg-[#1a1a1a] focus:border-red-600 focus:shadow-[0_0_6px_#e50914]"
-              rows={1}
-              style={{ minHeight: '44px', maxHeight: '200px' }}
+              rows={3}
+              style={{ minHeight: '60px', maxHeight: '200px' }}
               onInput={(e) => {
                 const target = e.target as HTMLTextAreaElement
                 target.style.height = 'auto'
