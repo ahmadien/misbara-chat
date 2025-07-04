@@ -116,14 +116,15 @@ export const genAIResponse = createServerFn({ method: 'POST', response: 'raw' })
       const readable = new ReadableStream({
         async start(controller) {
           for await (const chunk of stream) {
-            const text = chunk.choices[0]?.delta?.text
-            if (text) {
-              const json = JSON.stringify({
-                type: 'content_block_delta',
-                delta: { text }
-              })
-              // Append a newline so the client can reliably split chunks
-              controller.enqueue(encoder.encode(json + '\n'))
+            if (chunk.type === 'content_block_delta') {
+              const text = chunk.delta?.text;
+              if (text) {
+                const json = JSON.stringify({
+                  type: 'content_block_delta',
+                  delta: { text }
+                });
+                controller.enqueue(encoder.encode(json + '\n'));
+              }
             }
           }
           controller.close()
