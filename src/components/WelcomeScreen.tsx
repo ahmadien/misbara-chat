@@ -10,6 +10,7 @@ interface WelcomeScreenProps {
   setInput: (value: string) => void;
   handleSubmit: (e: React.FormEvent) => Promise<void>;
   isLoading: boolean;
+  disabled?: boolean;
   onDefineProblem: () => void;
 }
 
@@ -17,6 +18,7 @@ export const WelcomeScreen = ({
   input,
   setInput,
   handleSubmit,
+  disabled = false,
   isLoading,
   onDefineProblem
 }: WelcomeScreenProps) => {
@@ -77,6 +79,7 @@ export const WelcomeScreen = ({
         <div className="relative max-w-xl mx-auto">
           <textarea
             value={input}
+            disabled={disabled}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey) {
@@ -91,7 +94,7 @@ export const WelcomeScreen = ({
           />
           <button
             type="submit"
-            disabled={!input.trim() || isLoading}
+            disabled={!input.trim() || isLoading || disabled}
             className="absolute p-2 bg-red-600 text-white rounded -translate-y-1/2 right-2 top-1/2 hover:opacity-90 disabled:opacity-50"
           >
             <Send className="w-4 h-4" />

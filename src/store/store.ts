@@ -21,7 +21,7 @@ export interface State {
   conversations: Conversation[]
   currentConversationId: string | null
   isLoading: boolean
-  language: 'en' | 'ar'
+  language: 'ar' | 'ar'
 }
 
 const initialState: State = {
@@ -29,7 +29,7 @@ const initialState: State = {
   conversations: [],
   currentConversationId: null,
   isLoading: false,
-  language: 'en'
+  language: 'ar'
 }
 
 export const store = new Store<State>(initialState)

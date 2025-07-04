@@ -335,12 +335,12 @@ function Home() {
             </div>
 
             {/* Input */}
+            
             <ChatInput
               input={input}
               setInput={setInput}
               handleSubmit={handleSubmit}
               isLoading={isLoading}
-              onDefineProblem={handleDefineProblem}
               disabled={inputDisabled}
             />
           </>
@@ -350,6 +350,7 @@ function Home() {
             setInput={setInput}
             handleSubmit={handleSubmit}
             isLoading={isLoading}
+            disabled={inputDisabled}
             onDefineProblem={handleDefineProblem}
           />
         )}

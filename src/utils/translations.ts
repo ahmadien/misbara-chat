@@ -7,7 +7,8 @@ export const translations = {
     instruction: 'Please describe any challenge you\'re facing in life. Mr. Harmony will help analyze it using the Harmony Model to find the best understanding and solution.',
     subscribe: 'Subscribe to continue your session and explore more challenges.',
     welcomeSubtitle: 'We accompany you on your journey of self-discovery toward a more balanced and impactful life.',
-    topics: ['Life', 'Family', 'Work', 'Emotions']
+    topics: ['Life', 'Family', 'Work', 'Emotions'],
+    thinking: 'Mr. Harmony is thinking...'
   },
   ar: {
     newChat: 'دردشة جديدة',
@@ -17,7 +18,8 @@ export const translations = {
     instruction: 'حدد أي مشكلة تواجهها في الحياة، وسيساعدك السيد هارموني في تحليلها باستخدام نموذج هارموني للوصول إلى أفضل فهم وحل ممكن.',
     subscribe: 'اشترك لمتابعة الجلسة وتحليل مشكلات أخرى.',
     welcomeSubtitle: 'نرافقك في رحلة الذات لحياة أكثر توازنًا وأثرًا.',
-    topics: ['الحياة', 'العائلة', 'العمل', 'المشاعر']
+    topics: ['الحياة', 'العائلة', 'العمل', 'المشاعر'],
+    thinking: 'السيد هارموني يفكر...'
   }
 } as const
 
