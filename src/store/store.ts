@@ -21,7 +21,7 @@ export interface State {
   conversations: Conversation[]
   currentConversationId: string | null
   isLoading: boolean
-  language: 'ar' | 'ar'
+  language: 'ar' | 'en'
 }
 
 const initialState: State = {
