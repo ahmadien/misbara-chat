@@ -99,6 +99,12 @@ function Home() {
         },
       })
 
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}))
+        const errMsg = data.error || 'Failed to fetch AI response'
+        throw new Error(errMsg)
+      }
+
       const reader = response.body?.getReader()
       if (!reader) {
         throw new Error('No reader found in response')
