@@ -49,7 +49,7 @@ const DEFAULT_SYSTEM_PROMPT = `You are TanStack Chat, an AI assistant using Mark
 
 Keep responses concise and well-structured. Use appropriate Markdown formatting to enhance readability and understanding.`
 
-// CORRECTED: Using the proper Responses API format
+// Responses API only - no fallback
 export const genAIResponse = createServerFn({ method: 'POST', response: 'raw' })
   .validator(
     (d: {
@@ -100,7 +100,6 @@ export const genAIResponse = createServerFn({ method: 'POST', response: 'raw' })
     });
 
     try {
-      // CORRECTED: Use responses.create() with proper format
       console.log('Creating Responses API stream...');
       
       // Create the input in the correct format - simple array with role and content
@@ -121,11 +120,14 @@ export const genAIResponse = createServerFn({ method: 'POST', response: 'raw' })
         contentPreview: msg.content.substring(0, 100) + '...'
       })), null, 2));
 
-      // CORRECTED: Use the proper API method and format
+      // Use the Responses API with proper configuration
       const stream = await openai.responses.create({
-        model: 'gpt-4o-mini', // Using a model that's more likely to support Responses API
+        model: 'gpt-4o-mini',
         input: input,
         stream: true,
+        // Add response configuration to prevent truncation
+        max_completion_tokens: 6000, // Increase token limit
+        temperature: 0.7,
       });
 
       console.log('Responses API stream created successfully');
@@ -203,121 +205,37 @@ export const genAIResponse = createServerFn({ method: 'POST', response: 'raw' })
     } catch (error) {
       console.error('Responses API failed:', error);
       
-      // If Responses API fails, fall back to Chat Completions API
-      try {
-        console.log('Falling back to Chat Completions API...');
-        
-        const stream = await openai.chat.completions.create({
-          model: 'gpt-4o-mini',
-          messages: [
-            {
-              role: 'system',
-              content: systemPrompt
-            },
-            ...formattedMessages.map(msg => ({
-              role: msg.role as 'user' | 'assistant',
-              content: msg.content.trim()
-            }))
-          ],
-          stream: true,
-          temperature: 0.7,
-          max_tokens: 4000,
-        });
-
-        console.log('Chat Completions stream created successfully');
-
-        const encoder = new TextEncoder()
-        
-        const readable = new ReadableStream({
-          async start(controller) {
-            try {
-              console.log('Starting to process Chat Completions stream...');
-              let chunkCount = 0;
-              
-              for await (const chunk of stream) {
-                chunkCount++;
-                
-                const content = chunk.choices[0]?.delta?.content
-                if (content) {
-                  const json = JSON.stringify({
-                    type: 'content_block_delta',
-                    delta: { text: content },
-                  });
-                  controller.enqueue(encoder.encode(json + '\n'));
-                }
-                
-                // Check if the stream is done
-                if (chunk.choices[0]?.finish_reason) {
-                  console.log('Chat Completions stream finished with reason:', chunk.choices[0].finish_reason);
-                  break;
-                }
-              }
-              
-              console.log(`Chat Completions stream completed after ${chunkCount} chunks`);
-            } catch (streamError) {
-              console.error('Chat Completions streaming error:', streamError);
-              const errorJson = JSON.stringify({
-                type: 'error',
-                error: 'Chat Completions streaming error: ' + (streamError instanceof Error ? streamError.message : String(streamError))
-              });
-              controller.enqueue(encoder.encode(errorJson + '\n'));
-            } finally {
-              controller.close();
-            }
-          },
-          
-          cancel() {
-            console.log('Chat Completions stream cancelled by client');
-          }
-        })
-
-        return new Response(readable, {
-          headers: {
-            'Content-Type': 'text/event-stream; charset=utf-8',
-            'Cache-Control': 'no-cache, no-store, must-revalidate',
-            'Connection': 'keep-alive',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': 'Cache-Control',
-          },
-        })
-
-      } catch (fallbackError) {
-        console.error('Both APIs failed. Responses error:', error, 'Chat error:', fallbackError);
-        
-        let errorMessage = 'Both Responses and Chat Completions APIs failed'
-        let statusCode = 500
-        
-        if (error instanceof Error) {
-          if (error.message.includes('rate limit') || error.message.includes('429')) {
-            errorMessage = 'Rate limit exceeded. Please try again in a moment.'
-            statusCode = 429
-          } else if (error.message.includes('authentication') || error.message.includes('401')) {
-            errorMessage = 'Authentication failed. Please check your OpenAI API key.'
-            statusCode = 401
-          } else if (error.message.includes('model') || error.message.includes('400')) {
-            errorMessage = 'Invalid request. The model or parameters may be incorrect.'
-            statusCode = 400
-          } else {
-            errorMessage = `Primary: ${error.message}. Fallback: ${fallbackError instanceof Error ? fallbackError.message : 'Unknown error'}`
-          }
+      // Enhanced error handling without fallback
+      let errorMessage = 'Responses API failed'
+      let statusCode = 500
+      
+      if (error instanceof Error) {
+        if (error.message.includes('rate limit') || error.message.includes('429')) {
+          errorMessage = 'Rate limit exceeded. Please try again in a moment.'
+          statusCode = 429
+        } else if (error.message.includes('authentication') || error.message.includes('401')) {
+          errorMessage = 'Authentication failed. Please check your OpenAI API key.'
+          statusCode = 401
+        } else if (error.message.includes('model') || error.message.includes('400')) {
+          errorMessage = 'Invalid request. The model or parameters may be incorrect.'
+          statusCode = 400
+        } else if (error.message.includes('responses') || error.message.includes('not supported')) {
+          errorMessage = 'Responses API not available. Your API key may not have access to this feature.'
+          statusCode = 403
+        } else {
+          errorMessage = error.message
         }
-        
-        return new Response(JSON.stringify({ 
-          error: errorMessage,
-          details: {
-            responsesError: error instanceof Error ? {
-              name: error.name,
-              message: error.message
-            } : String(error),
-            chatError: fallbackError instanceof Error ? {
-              name: fallbackError.name,
-              message: fallbackError.message
-            } : String(fallbackError)
-          }
-        }), {
-          status: statusCode,
-          headers: { 'Content-Type': 'application/json' },
-        })
       }
+      
+      return new Response(JSON.stringify({ 
+        error: errorMessage,
+        details: error instanceof Error ? {
+          name: error.name,
+          message: error.message
+        } : String(error)
+      }), {
+        status: statusCode,
+        headers: { 'Content-Type': 'application/json' },
+      })
     }
   })
