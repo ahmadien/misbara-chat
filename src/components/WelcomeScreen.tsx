@@ -10,13 +10,15 @@ interface WelcomeScreenProps {
   setInput: (value: string) => void;
   handleSubmit: (e: React.FormEvent) => Promise<void>;
   isLoading: boolean;
+  onDefineProblem: () => void;
 }
 
 export const WelcomeScreen = ({
   input,
   setInput,
   handleSubmit,
-  isLoading
+  isLoading,
+  onDefineProblem
 }: WelcomeScreenProps) => {
   const [showTopics, setShowTopics] = useState(false)
   const { language } = useAppState()
@@ -37,8 +39,8 @@ export const WelcomeScreen = ({
           type="button"
           className="px-3 py-1.5 text-sm font-medium text-white rounded-lg bg-red-600 hover:opacity-90"
           onClick={() => {
-            setInput('')
             setShowTopics(false)
+            onDefineProblem()
           }}
         >
           {t.describeProblem}

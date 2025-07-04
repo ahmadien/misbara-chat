@@ -11,7 +11,7 @@ import {
 } from '../components'
 import { GoSidebarExpand } from 'react-icons/go'
 import { useConversations, useAppState, store, actions } from '../store'
-import { genAIResponse, type Message } from '../utils'
+import { genAIResponse, type Message, HARMONY_PROMPT_AR, HARMONY_PROMPT_EN, PROMPT1_AR, PROMPT1_EN, translations } from '../utils'
 
 function Home() {
   const {
@@ -52,6 +52,8 @@ function Home() {
   const [pendingMessage, setPendingMessage] = useState<Message | null>(null)
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [error, setError] = useState<string | null>(null);
+  const [systemPrompt, setSystemPrompt] = useState<string | null>(null)
+  const [inputDisabled, setInputDisabled] = useState(false)
 
   const scrollToBottom = useCallback(() => {
     if (messagesContainerRef.current) {
@@ -76,10 +78,15 @@ function Home() {
     try {
       // Get active prompt
       const activePrompt = getActivePrompt(store.state)
-      let systemPrompt
+      let promptToUse: { value: string; enabled: boolean } | undefined
       if (activePrompt) {
-        systemPrompt = {
+        promptToUse = {
           value: activePrompt.content,
+          enabled: true,
+        }
+      } else if (systemPrompt) {
+        promptToUse = {
+          value: systemPrompt,
           enabled: true,
         }
       }
@@ -88,7 +95,7 @@ function Home() {
       const response = await genAIResponse({
         data: {
           messages: [...messages, userMessage],
-          systemPrompt,
+          systemPrompt: promptToUse,
         },
       })
 
@@ -136,9 +143,14 @@ function Home() {
 
       setPendingMessage(null)
       if (newMessage.content.trim()) {
-        // Add AI message to Convex
         console.log('Adding AI response to conversation:', conversationId)
         await addMessage(conversationId, newMessage)
+        await addMessage(conversationId, {
+          id: (Date.now() + 2).toString(),
+          role: 'assistant',
+          content: `<button onclick="alert('subscribe')" class="px-3 py-1.5 text-sm font-medium text-white rounded-lg bg-red-600 hover:opacity-90">${translations[language].subscribe}</button>`
+        })
+        setInputDisabled(true)
       }
     } catch (error) {
       console.error('Error in AI response:', error)
@@ -150,7 +162,7 @@ function Home() {
       }
       await addMessage(conversationId, errorMessage)
     }
-  }, [messages, getActivePrompt, addMessage]);
+  }, [messages, getActivePrompt, addMessage, systemPrompt, language]);
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault()
@@ -241,7 +253,23 @@ function Home() {
   const handleNewChat = useCallback(() => {
     // Reset the current conversation so the welcome screen is shown
     setCurrentConversationId(null)
+    setSystemPrompt(null)
+    setInputDisabled(false)
   }, [setCurrentConversationId])
+
+  const handleDefineProblem = useCallback(async () => {
+    const instruction = language === 'ar' ? HARMONY_PROMPT_AR : HARMONY_PROMPT_EN
+    const prompt = language === 'ar' ? PROMPT1_AR : PROMPT1_EN
+    const id = await createNewConversation('Problem')
+    await addMessage(id, {
+      id: Date.now().toString(),
+      role: 'assistant',
+      content: instruction
+    })
+    setCurrentConversationId(id)
+    setSystemPrompt(prompt)
+    setInput('')
+  }, [language, createNewConversation, addMessage, setCurrentConversationId])
 
   const handleDeleteChat = useCallback(async (id: string) => {
     await deleteConversation(id)
@@ -305,11 +333,13 @@ function Home() {
             </div>
 
             {/* Input */}
-            <ChatInput 
+            <ChatInput
               input={input}
               setInput={setInput}
               handleSubmit={handleSubmit}
               isLoading={isLoading}
+              onDefineProblem={handleDefineProblem}
+              disabled={inputDisabled}
             />
           </>
         ) : (
@@ -318,6 +348,7 @@ function Home() {
             setInput={setInput}
             handleSubmit={handleSubmit}
             isLoading={isLoading}
+            onDefineProblem={handleDefineProblem}
           />
         )}
       </div>
