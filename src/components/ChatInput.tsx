@@ -8,13 +8,17 @@ interface ChatInputProps {
   setInput: (value: string) => void;
   handleSubmit: (e: React.FormEvent) => Promise<void>;
   isLoading: boolean;
+  onDefineProblem: () => void;
+  disabled?: boolean;
 }
 
 export const ChatInput = ({
   input,
   setInput,
   handleSubmit,
-  isLoading
+  isLoading,
+  onDefineProblem,
+  disabled = false
 }: ChatInputProps) => {
   const [showTopics, setShowTopics] = useState(false)
   const { language } = useAppState()
@@ -34,8 +38,8 @@ export const ChatInput = ({
             type="button"
             className="px-3 py-1.5 text-sm font-medium text-white rounded-lg bg-red-600 hover:opacity-90"
             onClick={() => {
-              setInput('')
               setShowTopics(false)
+              onDefineProblem()
             }}
           >
             {t.describeProblem}
@@ -72,6 +76,7 @@ export const ChatInput = ({
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              disabled={disabled}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault()
@@ -91,7 +96,7 @@ export const ChatInput = ({
             />
             <button
               type="submit"
-              disabled={!input.trim() || isLoading}
+              disabled={!input.trim() || isLoading || disabled}
               className="absolute p-2 bg-red-600 text-white rounded -translate-y-1/2 right-2 top-1/2 hover:opacity-90 disabled:opacity-50"
             >
               <Send className="w-4 h-4" />
