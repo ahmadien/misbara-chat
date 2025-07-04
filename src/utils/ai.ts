@@ -103,12 +103,19 @@ export const genAIResponse = createServerFn({ method: 'POST', response: 'raw' })
     })
 
     try {
-      const stream = await openai.chat.completions.create({
+      const stream = openai.responses.stream({
         model: 'gpt-4o-mini',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          ...formattedMessages,
-        ],
+        instructions: systemPrompt,
+        input: formattedMessages.map((msg) => ({
+          type: 'message',
+          role: msg.role,
+          content: [
+            {
+              type: 'input_text',
+              text: msg.content.trim(),
+            },
+          ],
+        })),
         stream: true,
       })
 
@@ -116,12 +123,12 @@ export const genAIResponse = createServerFn({ method: 'POST', response: 'raw' })
       const readable = new ReadableStream({
         async start(controller) {
           for await (const chunk of stream) {
-            if (chunk.type === 'content_block_delta') {
-              const text = chunk.delta?.text;
+            if (chunk.type === 'response.output_text.delta') {
+              const text = chunk.delta;
               if (text) {
                 const json = JSON.stringify({
-                  type: 'content_block_delta',
-                  delta: { text }
+                  type: 'response.output_text.delta',
+                  delta: { text },
                 });
                 controller.enqueue(encoder.encode(json + '\n'));
               }
