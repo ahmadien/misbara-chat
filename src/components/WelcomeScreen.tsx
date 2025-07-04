@@ -59,8 +59,7 @@ export const WelcomeScreen = ({
                   key={t}
                   type="button"
                   onClick={() => {
-                    setInput(t)
-                    setShowTopics(false)
+                    window.location.href = 'https://www.ajnee.com/'
                   }}
                   className={`px-2 py-1 text-sm ${language === 'ar' ? 'text-right' : 'text-left'} text-white rounded hover:bg-gray-700`}
 
