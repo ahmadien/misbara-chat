@@ -7,8 +7,9 @@ interface ChatInputProps {
   setInput: (value: string) => void;
   handleSubmit: (e: React.FormEvent) => Promise<void>;
   isLoading: boolean;
-  
+
   disabled?: boolean;
+  sidebarOpen: boolean;
 }
 
 export const ChatInput = ({
@@ -16,16 +17,21 @@ export const ChatInput = ({
   setInput,
   handleSubmit,
   isLoading,
-  disabled = false
+  disabled = false,
+  sidebarOpen
 }: ChatInputProps) => {
   const { language } = useAppState()
   const t = translations[language]
 
+  const offsetClass = sidebarOpen
+    ? language === 'ar'
+      ? 'left-0 md:right-64 right-0'
+      : 'right-0 md:left-64 left-0'
+    : 'left-0 right-0'
+
   return (
     <div
-      className={`absolute bottom-0 border-t text-white backdrop-blur-sm border-red-600/10 ${
-        language === 'ar' ? 'left-0 right-64' : 'right-0 left-64'
-      }`}
+      className={`absolute bottom-0 border-t text-white backdrop-blur-sm border-red-600/10 ${offsetClass}`}
       style={{ background: 'rgba(0,0,0,0.8)' }}
     >
       <div className="w-full max-w-3xl px-4 py-3 mx-auto">
