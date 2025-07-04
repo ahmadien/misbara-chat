@@ -69,8 +69,7 @@ export const genAIResponse = createServerFn({ method: 'POST', response: 'raw' })
     }
 
     const openai = new OpenAI({
-      apiKey,
-      model: 'gpt-4o-mini'
+      apiKey
     })
 
     // Filter out error messages and empty messages
