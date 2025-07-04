@@ -10,7 +10,7 @@ import {
 
 } from '../components'
 import { GoSidebarExpand } from 'react-icons/go'
-import { useConversations, useAppState, store, actions } from '../store'
+import { useConversations, useAppState, actions } from '../store'
 import { genAIResponse, type Message, HARMONY_PROMPT_AR, HARMONY_PROMPT_EN, PROMPT1_AR, PROMPT1_EN, translations } from '../utils'
 
 function Home() {
@@ -25,7 +25,7 @@ function Home() {
     addMessage,
   } = useConversations()
   
-  const { isLoading, setLoading, getActivePrompt, language } = useAppState()
+  const { isLoading, setLoading, language } = useAppState()
 
   useEffect(() => {
     document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr'
@@ -79,15 +79,8 @@ function Home() {
 
 const processAIResponse = useCallback(async (conversationId: string, userMessage: Message) => {
   try {
-    // Get active prompt
-    const activePrompt = getActivePrompt(store.state)
     let promptToUse: { value: string; enabled: boolean } | undefined
-    if (activePrompt) {
-      promptToUse = {
-        value: activePrompt.content,
-        enabled: true,
-      }
-    } else if (systemPrompt) {
+    if (systemPrompt) {
       promptToUse = {
         value: systemPrompt,
         enabled: true,
@@ -243,7 +236,7 @@ const processAIResponse = useCallback(async (conversationId: string, userMessage
     }
     await addMessage(conversationId, errorMessage)
   }
-}, [messages, getActivePrompt, addMessage, systemPrompt, language, setPendingMessage, setInputDisabled])
+}, [messages, addMessage, systemPrompt, language, setPendingMessage, setInputDisabled])
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault()

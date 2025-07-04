@@ -15,14 +15,12 @@ export function useAppState() {
   const isLoading = useStore(store, s => selectors.getIsLoading(s));
   const conversations = useStore(store, s => selectors.getConversations(s));
   const currentConversationId = useStore(store, s => selectors.getCurrentConversationId(s));
-  const prompts = useStore(store, s => selectors.getPrompts(s));
   const language = useStore(store, s => selectors.getLanguage(s));
   
   return {
     conversations,
     currentConversationId,
     isLoading,
-    prompts,
     language,
     
     // Actions
@@ -33,13 +31,9 @@ export function useAppState() {
     addMessage: actions.addMessage,
     setLoading: actions.setLoading,
     setLanguage: actions.setLanguage,
-    createPrompt: actions.createPrompt,
-    deletePrompt: actions.deletePrompt,
-    setPromptActive: actions.setPromptActive,
     
     // Selectors
     getCurrentConversation: selectors.getCurrentConversation,
-    getActivePrompt: selectors.getActivePrompt,
   };
 }
 
