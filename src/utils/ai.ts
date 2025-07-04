@@ -138,7 +138,11 @@ export const genAIResponse = createServerFn({ method: 'POST', response: 'raw' })
         }
       })
 
-      return new Response(readable)
+      return new Response(readable, {
+        headers: {
+          'Content-Type': 'text/event-stream; charset=utf-8',
+        },
+      })
     } catch (error) {
       console.error('Error in genAIResponse:', error)
       
