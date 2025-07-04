@@ -1,4 +1,10 @@
-import { PlusCircle, MessageCircle, Trash2, Edit2, X } from 'lucide-react';
+import {
+  PlusCircle,
+  MessageCircle,
+  Trash2,
+  Edit2,
+  ChevronLeft,
+} from 'lucide-react';
 import { useAppState } from '../store';
 import { translations } from '../utils';
 
@@ -42,8 +48,12 @@ export const Sidebar = ({
         <PlusCircle className="w-4 h-4" />
         {t.newChat}
       </button>
-      <button onClick={onClose} className="p-1 text-white bg-red-600 rounded-lg">
-        <X className="w-4 h-4" />
+      <button
+        onClick={onClose}
+        className="p-1 text-white bg-red-600 rounded-lg"
+        title="Collapse sidebar"
+      >
+        <ChevronLeft className="w-4 h-4" />
       </button>
     </div>
 
