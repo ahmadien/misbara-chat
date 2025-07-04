@@ -50,7 +50,7 @@ const DEFAULT_SYSTEM_PROMPT = `You are TanStack Chat, an AI assistant using Mark
 Keep responses concise and well-structured. Use appropriate Markdown formatting to enhance readability and understanding.`
 
 // Non-streaming implementation
-export const genAIResponse = createServerFn({ method: 'GET', response: 'raw' })
+export const genAIResponse = createServerFn({ method: 'POST', response: 'raw' })
   .validator(
     (d: {
       messages: Array<Message>
