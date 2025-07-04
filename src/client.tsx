@@ -10,20 +10,25 @@ initSentry()
 
 const router = createRouter()
 
-// Check if Sentry DSN is defined before creating error boundary
-const AppComponent = process.env.SENTRY_DSN
+// Choose the component wrapper depending on Sentry configuration
+const Root = process.env.SENTRY_DSN
   ? Sentry.withErrorBoundary(StartClient, {
       fallback: () => <div>An error has occurred. Our team has been notified.</div>,
     })
   : StartClient
 
-// Ensure there is a valid DOM element for React to hydrate
-let container = document.getElementById('root') as HTMLElement | null
-
-if (!container) {
-  container = document.createElement('div')
-  container.id = 'root'
-  document.body.appendChild(container)
+export default function Client() {
+  return <Root router={router} />
 }
 
-hydrateRoot(container, <AppComponent router={router} />)
+// Hydrate on the client if we're in the browser
+if (typeof document !== 'undefined') {
+  let container = document.getElementById('root') as HTMLElement | null
+  if (!container) {
+    container = document.createElement('div')
+    container.id = 'root'
+    document.body.appendChild(container)
+  }
+
+  hydrateRoot(container, <Client />)
+}
