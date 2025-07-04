@@ -141,17 +141,19 @@ function Home() {
         }
       }
 
-      setPendingMessage(null)
-      if (newMessage.content.trim()) {
-        console.log('Adding AI response to conversation:', conversationId)
-        await addMessage(conversationId, newMessage)
-        await addMessage(conversationId, {
-          id: (Date.now() + 2).toString(),
-          role: 'assistant',
-          content: `<a href="https://www.ajnee.com" target="_blank" class="px-3 py-1.5 text-sm font-medium text-white rounded-lg bg-red-600 hover:opacity-90">${translations[language].subscribe}</a>`
-        })
-        setInputDisabled(true)
-      }
+        setPendingMessage(null)
+        if (newMessage.content.trim()) {
+          console.log('Adding AI response to conversation:', conversationId)
+          await addMessage(conversationId, newMessage)
+          // Ensure the full response is rendered before showing the subscription link
+          await new Promise(resolve => setTimeout(resolve, 500))
+          await addMessage(conversationId, {
+            id: (Date.now() + 2).toString(),
+            role: 'assistant',
+            content: `<a href="https://www.ajnee.com" target="_blank" class="px-3 py-1.5 text-sm font-medium text-white rounded-lg bg-red-600 hover:opacity-90">${translations[language].subscribe}</a>`
+          })
+          setInputDisabled(true)
+        }
     } catch (error) {
       console.error('Error in AI response:', error)
       // Add an error message to the conversation
