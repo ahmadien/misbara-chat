@@ -49,7 +49,7 @@ const DEFAULT_SYSTEM_PROMPT = `You are TanStack Chat, an AI assistant using Mark
 
 Keep responses concise and well-structured. Use appropriate Markdown formatting to enhance readability and understanding.`
 
-// Non-streaming implementation
+// Corrected Responses API implementation
 export const genAIResponse = createServerFn({ method: 'POST', response: 'raw' })
   .validator(
     (d: {
@@ -57,14 +57,13 @@ export const genAIResponse = createServerFn({ method: 'POST', response: 'raw' })
       systemPrompt?: { value: string; enabled: boolean }
     }) => d,
   )
-  // .middleware([loggingMiddleware])
   .handler(async ({ data }) => {
     // Check for API key in environment variables
     const apiKey = process.env.OPENAI_API_KEY || import.meta.env.VITE_OPENAI_API_KEY
 
     if (!apiKey) {
       throw new Error(
-        'Missing API key: Please set VITE_OPENAI_API_KEY in your environment variables or VITE_OPENAI_API_KEY in your .env file.'
+        'Missing API key: Please set OPENAI_API_KEY in your environment variables or VITE_OPENAI_API_KEY in your .env file.'
       )
     }
 
@@ -79,10 +78,6 @@ export const genAIResponse = createServerFn({ method: 'POST', response: 'raw' })
           msg.content.trim() !== '' &&
           !msg.content.startsWith('Sorry, I encountered an error'),
       )
-      .map((msg) => ({
-        role: msg.role,
-        content: msg.content.trim(),
-      }))
 
     if (formattedMessages.length === 0) {
       return new Response(JSON.stringify({ error: 'No valid messages to send' }), {
@@ -98,11 +93,11 @@ export const genAIResponse = createServerFn({ method: 'POST', response: 'raw' })
     // Debug log to verify prompt layering
     console.log('System Prompt Configuration:', {
       hasCustomPrompt: data.systemPrompt?.enabled,
-      customPromptValue: data.systemPrompt?.value,
-      finalPrompt: systemPrompt,
+      customPromptValue: data.systemPrompt?.value?.substring(0, 100) + '...', // Truncate for logging
     })
 
     try {
+      // CORRECTED: Use proper Responses API format according to documentation
       const stream = openai.responses.stream({
         model: 'gpt-4o',
         instructions: systemPrompt,
@@ -120,45 +115,94 @@ export const genAIResponse = createServerFn({ method: 'POST', response: 'raw' })
       })
 
       const encoder = new TextEncoder()
+      
+      // Create a readable stream that properly handles the Responses API events
       const readable = new ReadableStream({
         async start(controller) {
-          for await (const chunk of stream) {
-            if (chunk.type === 'response.output_text.delta') {
-              const text = chunk.delta;
-              if (text) {
-                const json = JSON.stringify({
-                  type: 'response.output_text.delta',
-                  delta: { text },
+          try {
+            for await (const event of stream) {
+              console.log('Received event:', event.type); // Debug log
+              
+              // Handle the text delta events according to the Responses API docs
+              if (event.type === 'response.output_text.delta') {
+                const text = event.delta;
+                if (text) {
+                  const json = JSON.stringify({
+                    type: 'content_block_delta',
+                    delta: { text },
+                  });
+                  controller.enqueue(encoder.encode(json + '\n'));
+                }
+              }
+              // Handle completion
+              else if (event.type === 'response.done') {
+                console.log('Stream completed');
+                break;
+              }
+              // Handle errors
+              else if (event.type === 'error') {
+                console.error('OpenAI stream error:', event);
+                const errorJson = JSON.stringify({
+                  type: 'error',
+                  error: event.error?.message || 'Unknown streaming error'
                 });
-                controller.enqueue(encoder.encode(json + '\n'));
+                controller.enqueue(encoder.encode(errorJson + '\n'));
+                break;
               }
             }
+          } catch (error) {
+            console.error('Stream processing error:', error);
+            const errorJson = JSON.stringify({
+              type: 'error',
+              error: 'Stream processing failed'
+            });
+            controller.enqueue(encoder.encode(errorJson + '\n'));
+          } finally {
+            controller.close();
           }
-          controller.close()
+        },
+        
+        // Handle stream cancellation
+        cancel() {
+          console.log('Stream cancelled by client');
         }
       })
 
       return new Response(readable, {
         headers: {
           'Content-Type': 'text/event-stream; charset=utf-8',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Connection': 'keep-alive',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers': 'Cache-Control',
         },
       })
     } catch (error) {
       console.error('Error in genAIResponse:', error)
       
-      // Error handling with specific messages
+      // Enhanced error handling
       let errorMessage = 'Failed to get AI response'
       let statusCode = 500
       
       if (error instanceof Error) {
-        if (error.message.includes('rate limit')) {
+        console.error('Error details:', {
+          name: error.name,
+          message: error.message,
+          stack: error.stack?.substring(0, 500)
+        });
+        
+        if (error.message.includes('rate limit') || error.message.includes('429')) {
           errorMessage = 'Rate limit exceeded. Please try again in a moment.'
+          statusCode = 429
         } else if (error.message.includes('Connection error') || error.name === 'APIConnectionError') {
           errorMessage = 'Connection to OpenAI API failed. Please check your internet connection and API key.'
-          statusCode = 503 // Service Unavailable
-        } else if (error.message.includes('authentication')) {
+          statusCode = 503
+        } else if (error.message.includes('authentication') || error.message.includes('401')) {
           errorMessage = 'Authentication failed. Please check your OpenAI API key.'
-          statusCode = 401 // Unauthorized
+          statusCode = 401
+        } else if (error.message.includes('model') || error.message.includes('400')) {
+          errorMessage = 'Invalid request. Please check the model and parameters.'
+          statusCode = 400
         } else {
           errorMessage = error.message
         }
@@ -166,10 +210,13 @@ export const genAIResponse = createServerFn({ method: 'POST', response: 'raw' })
       
       return new Response(JSON.stringify({ 
         error: errorMessage,
-        details: error instanceof Error ? error.name : undefined
+        details: error instanceof Error ? {
+          name: error.name,
+          message: error.message
+        } : undefined
       }), {
         status: statusCode,
         headers: { 'Content-Type': 'application/json' },
       })
     }
-  }) 
+  })

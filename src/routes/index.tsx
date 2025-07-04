@@ -74,106 +74,176 @@ function Home() {
   }, []);
 
   // Helper function to process AI response
-  const processAIResponse = useCallback(async (conversationId: string, userMessage: Message) => {
-    try {
-      // Get active prompt
-      const activePrompt = getActivePrompt(store.state)
-      let promptToUse: { value: string; enabled: boolean } | undefined
-      if (activePrompt) {
-        promptToUse = {
-          value: activePrompt.content,
-          enabled: true,
-        }
-      } else if (systemPrompt) {
-        promptToUse = {
-          value: systemPrompt,
-          enabled: true,
-        }
+// Improved processAIResponse function with better error handling and debugging
+// Replace this in your src/routes/index.tsx
+
+const processAIResponse = useCallback(async (conversationId: string, userMessage: Message) => {
+  try {
+    // Get active prompt
+    const activePrompt = getActivePrompt(store.state)
+    let promptToUse: { value: string; enabled: boolean } | undefined
+    if (activePrompt) {
+      promptToUse = {
+        value: activePrompt.content,
+        enabled: true,
       }
-
-      // Get AI response
-      const response = await genAIResponse({
-        data: {
-          messages: [...messages, userMessage],
-          systemPrompt: promptToUse,
-        },
-      })
-
-      if (!response.ok) {
-        const data = await response.json().catch(() => ({}))
-        const errMsg = data.error || 'Failed to fetch AI response'
-        throw new Error(errMsg)
+    } else if (systemPrompt) {
+      promptToUse = {
+        value: systemPrompt,
+        enabled: true,
       }
+    }
 
-      const reader = response.body?.getReader()
-      if (!reader) {
-        throw new Error('No reader found in response')
+    console.log('Making AI request with:', {
+      messageCount: [...messages, userMessage].length,
+      hasSystemPrompt: !!promptToUse?.enabled,
+      conversationId
+    });
+
+    // Get AI response
+    const response = await genAIResponse({
+      data: {
+        messages: [...messages, userMessage],
+        systemPrompt: promptToUse,
+      },
+    })
+
+    console.log('Response received:', {
+      ok: response.ok,
+      status: response.status,
+      statusText: response.statusText,
+      headers: Object.fromEntries(response.headers.entries())
+    });
+
+    if (!response.ok) {
+      let errorData;
+      try {
+        errorData = await response.json();
+      } catch (e) {
+        errorData = { error: `HTTP ${response.status}: ${response.statusText}` };
       }
+      console.error('API Error:', errorData);
+      throw new Error(errorData.error || 'Failed to fetch AI response')
+    }
 
-      const decoder = new TextDecoder()
+    const reader = response.body?.getReader()
+    if (!reader) {
+      throw new Error('No reader found in response - response.body is null')
+    }
 
-      let done = false
-      let buffer = ''
-      let newMessage = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant' as const,
-        content: '',
-      }
-      while (!done) {
-        const out = await reader.read()
-        done = out.done
-        if (out.value) {
-          buffer += decoder.decode(out.value)
+    const decoder = new TextDecoder()
+    let done = false
+    let buffer = ''
+    let newMessage = {
+      id: (Date.now() + 1).toString(),
+      role: 'assistant' as const,
+      content: '',
+    }
+    
+    let chunkCount = 0;
+    
+    console.log('Starting to read stream...');
+    
+    while (!done) {
+      try {
+        const result = await reader.read()
+        done = result.done
+        chunkCount++;
+        
+        if (result.value) {
+          const chunk = decoder.decode(result.value, { stream: true })
+          buffer += chunk
+          
+          console.log(`Chunk ${chunkCount}:`, {
+            chunkLength: chunk.length,
+            bufferLength: buffer.length,
+            chunkPreview: chunk.substring(0, 100)
+          });
+          
+          // Process complete lines
           let newlineIndex = buffer.indexOf('\n')
           while (newlineIndex !== -1) {
             const line = buffer.slice(0, newlineIndex).trim()
             buffer = buffer.slice(newlineIndex + 1)
+            
             if (line) {
+              console.log('Processing line:', line);
+              
               try {
                 const json = JSON.parse(line)
-                if (
-                  json.type === 'content_block_delta' ||
-                  json.type === 'response.output_text.delta'
-                ) {
+                console.log('Parsed JSON:', json);
+                
+                if (json.type === 'content_block_delta' && json.delta?.text) {
                   newMessage = {
                     ...newMessage,
                     content: newMessage.content + json.delta.text,
                   }
                   setPendingMessage(newMessage)
+                  console.log('Updated message length:', newMessage.content.length);
+                } else if (json.type === 'error') {
+                  console.error('Stream error:', json.error);
+                  throw new Error(json.error || 'Streaming error occurred')
+                } else {
+                  console.log('Unhandled event type:', json.type);
                 }
-              } catch (e) {
-                console.error('Error parsing streaming response:', e)
+              } catch (parseError) {
+                console.error('Error parsing streaming response:', {
+                  line,
+                  error: parseError,
+                  parseError
+                });
+                // Continue processing instead of failing completely
               }
             }
             newlineIndex = buffer.indexOf('\n')
           }
+        } else {
+          console.log(`Chunk ${chunkCount}: empty value, done=${done}`);
         }
+      } catch (readError) {
+        console.error('Error reading from stream:', readError);
+        done = true; // Exit loop on read error
+        break;
       }
-
-        setPendingMessage(null)
-        if (newMessage.content.trim()) {
-          console.log('Adding AI response to conversation:', conversationId)
-          await addMessage(conversationId, newMessage)
-          // Ensure the full response is rendered before showing the subscription link
-          await new Promise(resolve => setTimeout(resolve, 500))
-          await addMessage(conversationId, {
-            id: (Date.now() + 2).toString(),
-            role: 'assistant',
-            content: `<a href="https://www.ajnee.com" target="_blank" class="px-3 py-1.5 text-sm font-medium text-white rounded-lg bg-red-600 hover:opacity-90">${translations[language].subscribe}</a>`
-          })
-          setInputDisabled(true)
-        }
-    } catch (error) {
-      console.error('Error in AI response:', error)
-      // Add an error message to the conversation
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant' as const,
-        content: 'Sorry, I encountered an error generating a response.',
-      }
-      await addMessage(conversationId, errorMessage)
     }
-  }, [messages, getActivePrompt, addMessage, systemPrompt, language]);
+    
+    console.log('Stream reading completed:', {
+      totalChunks: chunkCount,
+      finalMessageLength: newMessage.content.length,
+      bufferRemaining: buffer.length
+    });
+
+    setPendingMessage(null)
+    
+    if (newMessage.content.trim()) {
+      console.log('Adding AI response to conversation:', conversationId)
+      await addMessage(conversationId, newMessage)
+      
+      // Ensure the full response is rendered before showing the subscription link
+      await new Promise(resolve => setTimeout(resolve, 500))
+      await addMessage(conversationId, {
+        id: (Date.now() + 2).toString(),
+        role: 'assistant',
+        content: `<a href="https://www.ajnee.com" target="_blank" class="px-3 py-1.5 text-sm font-medium text-white rounded-lg bg-red-600 hover:opacity-90">${translations[language].subscribe}</a>`
+      })
+      setInputDisabled(true)
+    } else {
+      console.warn('No content received from AI response');
+      throw new Error('No content received from AI response')
+    }
+  } catch (error) {
+    console.error('Error in AI response:', error)
+    setPendingMessage(null)
+    
+    // Add an error message to the conversation
+    const errorMessage: Message = {
+      id: (Date.now() + 1).toString(),
+      role: 'assistant' as const,
+      content: 'Sorry, I encountered an error generating a response. Please try again.',
+    }
+    await addMessage(conversationId, errorMessage)
+  }
+}, [messages, getActivePrompt, addMessage, systemPrompt, language, setPendingMessage, setInputDisabled])
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault()
