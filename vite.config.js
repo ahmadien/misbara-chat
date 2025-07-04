@@ -2,7 +2,6 @@ import { defineConfig } from "vite";
 import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
-import svgrPlugin from "vite-plugin-svgr";
 
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 
@@ -10,7 +9,6 @@ const basePlugins = [
   TanStackRouterVite({ autoCodeSplitting: true }),
   viteReact(),
   tailwindcss(),
-  svgrPlugin(),
 ];
 
 // Add Sentry plugin only if auth token is available
