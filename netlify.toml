@@ -1,2 +1,4 @@
 [template.environment]
 VITE_OPENAI_API_KEY="Add your OpenAI API key here"
+[functions]
+timeout = 60
