@@ -51,6 +51,12 @@ function Home() {
   const messagesContainerRef = useRef<HTMLDivElement>(null)
   const [pendingMessage, setPendingMessage] = useState<Message | null>(null)
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsSidebarOpen(window.innerWidth >= 768)
+    }
+  }, [])
   const [error, setError] = useState<string | null>(null);
   const [systemPrompt, setSystemPrompt] = useState<string | null>(null)
   const [inputDisabled, setInputDisabled] = useState(false)
@@ -378,7 +384,7 @@ const processAIResponse = useCallback(async (conversationId: string, userMessage
       ) : (
         <button
           onClick={() => setIsSidebarOpen(true)}
-          className="fixed top-1/2 left-0 z-10 -translate-y-1/2 rounded-r-lg bg-red-600 p-2 text-white"
+          className={`fixed top-1/2 z-10 -translate-y-1/2 bg-red-600 p-2 text-white ${language === 'ar' ? 'right-0 rounded-l-lg' : 'left-0 rounded-r-lg'}`}
         >
           <GoSidebarExpand className="w-5 h-5" />
         </button>
@@ -414,6 +420,7 @@ const processAIResponse = useCallback(async (conversationId: string, userMessage
               handleSubmit={handleSubmit}
               isLoading={isLoading}
               disabled={inputDisabled}
+              sidebarOpen={isSidebarOpen}
             />
           </>
         ) : (

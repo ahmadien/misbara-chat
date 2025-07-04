@@ -33,7 +33,7 @@ export const WelcomeScreen = ({
       <div className="flex justify-center mb-4">
         <BrandLogo className="w-20 h-auto" />
       </div>
-      <p className="w-2/3 mx-auto mb-6 text-lg text-gray-400">
+      <p className="w-full sm:w-2/3 mx-auto mb-6 text-lg text-gray-400">
         {t.welcomeSubtitle}
       </p>
       <div className="flex items-center justify-center gap-2 mb-4">
