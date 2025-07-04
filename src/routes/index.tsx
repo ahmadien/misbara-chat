@@ -148,7 +148,7 @@ function Home() {
         await addMessage(conversationId, {
           id: (Date.now() + 2).toString(),
           role: 'assistant',
-          content: `<button onclick="alert('subscribe')" class="px-3 py-1.5 text-sm font-medium text-white rounded-lg bg-red-600 hover:opacity-90">${translations[language].subscribe}</button>`
+          content: `<a href="https://www.ajnee.com" target="_blank" class="px-3 py-1.5 text-sm font-medium text-white rounded-lg bg-red-600 hover:opacity-90">${translations[language].subscribe}</a>`
         })
         setInputDisabled(true)
       }
