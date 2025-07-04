@@ -70,7 +70,7 @@ export const genAIResponse = createServerFn({ method: 'POST', response: 'raw' })
 
     const openai = new OpenAI({
       apiKey,
-      timeout: 30000
+      model: 'gpt-4o-mini'
     })
 
     // Filter out error messages and empty messages
@@ -105,7 +105,7 @@ export const genAIResponse = createServerFn({ method: 'POST', response: 'raw' })
 
     try {
       const stream = await openai.chat.completions.create({
-        model: 'gpt-4o',
+        model: 'gpt-4o-mini',
         messages: [
           { role: 'system', content: systemPrompt },
           ...formattedMessages,
@@ -117,7 +117,7 @@ export const genAIResponse = createServerFn({ method: 'POST', response: 'raw' })
       const readable = new ReadableStream({
         async start(controller) {
           for await (const chunk of stream) {
-            const text = chunk.choices[0]?.delta?.content
+            const text = chunk.choices[0]?.delta?.text
             if (text) {
               const json = JSON.stringify({
                 type: 'content_block_delta',
