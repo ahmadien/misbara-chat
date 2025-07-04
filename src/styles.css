@@ -132,11 +132,12 @@ html {
 
 .prose th, .prose td {
   padding: 0.75em;
-  border: 1px solid rgba(220, 38, 38, 0.2);
+  border: 1px solid rgba(185, 28, 28, 0.2);
+  color: #ffffff;
 }
 
 .prose th {
-  background-color: rgba(220, 38, 38, 0.1);
+  background-color: #b91c1c;
   font-weight: 600;
 }
 
@@ -198,12 +199,13 @@ html {
 
 .prose th,
 .prose td {
-  border: 1px solid rgba(220, 38, 38, 0.2);
+  border: 1px solid rgba(185, 28, 28, 0.2);
   padding: 0.5em;
+  color: #ffffff;
 }
 
 .prose th {
-  background-color: rgba(220, 38, 38, 0.1);
+  background-color: #b91c1c;
 }
 
 .prose strong {
@@ -253,8 +255,13 @@ html {
 
 .chat-message th,
 .chat-message td {
-  border: 1px solid #ccc;
+  border: 1px solid rgba(185, 28, 28, 0.2);
   padding: 8px;
+  color: #ffffff;
+}
+
+.chat-message th {
+  background-color: #b91c1c;
 }
 
 [dir='rtl'] .chat-message th,
