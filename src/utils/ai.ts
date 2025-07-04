@@ -104,7 +104,7 @@ export const genAIResponse = createServerFn({ method: 'POST', response: 'raw' })
 
     try {
       const stream = openai.responses.stream({
-        model: 'gpt-4o-mini',
+        model: 'gpt-4o',
         instructions: systemPrompt,
         input: formattedMessages.map((msg) => ({
           type: 'message',
