@@ -149,7 +149,11 @@ Your self-awareness as a leader is admirable. Let me now analyze the issue using
 
 ---
 
-🧠 Reminder: Don’t address the issue from only one angle. Pass it through all parts of the Harmony Model for the most insightful diagnosis and effective intervention.`
+🧠 Reminder: Don’t address the issue from only one angle. Pass it through all parts of the Harmony Model for the most insightful diagnosis and effective intervention.
+
+### Please respond only in English
+### Please respond in 3 full tables, do not respond in partial tables`
+
 
 export const PROMPT1_AR = `أنت مساعد ذكاء اصطناعي مختص في تحليل مشكلات الإنسان الشخصية أو المهنية أو التربوية أو القيادية، وذلك باستخدام نموذج هارموني (Harmony Model).
 
@@ -299,4 +303,10 @@ export const PROMPT1_AR = `أنت مساعد ذكاء اصطناعي مختص ف
 
 ---
 
-🧠 تذكير: لا تعالج المشكلة من زاوية واحدة فقط، بل مرّرها عبر كل زوايا النموذج للحصول على أفضل قراءة وأفضل تدخل ممكن.`
+🧠 تذكير: لا تعالج المشكلة من زاوية واحدة فقط، بل مرّرها عبر كل زوايا النموذج للحصول على أفضل قراءة وأفضل تدخل ممكن.
+
+
+### من فضلك قم فقط بالتحدث باللغة العربية
+### من فضلك قم بالرد من خلال الثلاث محاور أي 3 جداول كاملة، لا تقم بالرد بجزء فقط دون اهمال باقي المحاور .. اجعل اجابتك كاملة ومتكاملة من خلال الثلاث محاور
+
+`

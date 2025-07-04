@@ -125,9 +125,6 @@ export const genAIResponse = createServerFn({ method: 'POST', response: 'raw' })
         model: 'gpt-4o-mini',
         input: input,
         stream: true,
-        // Add response configuration to prevent truncation
-        max_completion_tokens: 6000, // Increase token limit
-        temperature: 0.7,
       });
 
       console.log('Responses API stream created successfully');
