@@ -131,7 +131,10 @@ function Home() {
             if (line) {
               try {
                 const json = JSON.parse(line)
-                if (json.type === 'content_block_delta') {
+                if (
+                  json.type === 'content_block_delta' ||
+                  json.type === 'response.output_text.delta'
+                ) {
                   newMessage = {
                     ...newMessage,
                     content: newMessage.content + json.delta.text,
