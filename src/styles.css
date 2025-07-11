@@ -1,17 +1,6 @@
 @import "tailwindcss";
 @import "highlight.js/styles/github-dark.css";
 
-/* Global focus style for accessibility */
-:focus-visible {
-  outline: 2px solid #e50914;
-  outline-offset: 2px;
-}
-
-.to-red-600 {
-    --tw-gradient-to: oklch(0.65 0.3 29.03);
-    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from-position), oklch(0.54 0.25 28.35) var(--tw-gradient-from-position), oklch(0.63 0.29 28.98) var(--tw-gradient-to-position));
-}
-
 body {
   @apply m-0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -272,4 +261,253 @@ html {
 [dir='ltr'] .chat-message th,
 [dir='ltr'] .chat-message td {
   text-align: left;
+}
+
+/* Table wrapper - desktop styles */
+.table-wrapper {
+  width: 100%;
+  overflow-x: visible;
+}
+
+/* Mobile responsive styles for all message content */
+@media (max-width: 768px) {
+  /* General prose text sizing for mobile */
+  .prose {
+    font-size: 0.875rem; /* 14px - smaller base font */
+    line-height: 1.5;
+  }
+  
+  .prose p {
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.5;
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+  }
+  
+  /* Headings for mobile */
+  .prose h1 {
+    font-size: 1.5rem; /* 24px instead of 2em */
+    margin-bottom: 0.5em;
+    line-height: 1.3;
+  }
+  
+  .prose h2 {
+    font-size: 1.25rem; /* 20px instead of 1.5em */
+    margin-top: 0.75em;
+    margin-bottom: 0.5em;
+    line-height: 1.3;
+  }
+  
+  .prose h3 {
+    font-size: 1.125rem; /* 18px instead of 1.25em */
+    margin-top: 0.75em;
+    margin-bottom: 0.5em;
+    line-height: 1.3;
+  }
+  
+  .prose h4 {
+    font-size: 1rem; /* 16px */
+    margin-top: 0.75em;
+    margin-bottom: 0.5em;
+    line-height: 1.3;
+  }
+  
+  /* Code blocks for mobile */
+  .prose code {
+    font-size: 0.75rem; /* 12px - smaller inline code */
+    padding: 0.15rem 0.3rem;
+  }
+  
+  .prose pre {
+    font-size: 0.75rem; /* 12px - smaller code blocks */
+    padding: 0.75rem;
+    margin: 0.75em 0;
+    border-radius: 0.375rem;
+  }
+  
+  .prose pre code {
+    font-size: 0.75rem; /* 12px */
+  }
+  
+  /* Lists for mobile */
+  .prose ul, .prose ol {
+    font-size: 0.875rem; /* 14px */
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+    padding-left: 1.25em;
+  }
+  
+  .prose li {
+    font-size: 0.875rem; /* 14px */
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+    line-height: 1.5;
+  }
+  
+  /* Blockquotes for mobile */
+  .prose blockquote {
+    font-size: 0.875rem; /* 14px */
+    padding: 0.75em;
+    margin: 0.75em 0;
+  }
+  
+  /* Links for mobile */
+  .prose a {
+    font-size: inherit; /* Inherit from parent */
+  }
+  
+  /* Strong and emphasis for mobile */
+  .prose strong {
+    font-size: inherit;
+  }
+  
+  .prose em {
+    font-size: inherit;
+  }
+  
+  /* Message container adjustments for mobile */
+  .chat-message {
+    padding: 0.75rem; /* Smaller padding - 12px instead of 16px */
+    gap: 0.75rem; /* Smaller gap between avatar and content */
+  }
+  
+  /* Avatar sizing for mobile */
+  .chat-message .flex-shrink-0 {
+    width: 2rem; /* 32px instead of larger sizes */
+    height: 2rem;
+    font-size: 0.75rem; /* Smaller font in user avatar */
+  }
+  
+  /* AI icon sizing for mobile */
+  .chat-message .w-12.h-12 {
+    width: 2.5rem !important; /* 40px instead of 48px */
+    height: 2.5rem !important;
+  }
+  
+  /* Overall message spacing for mobile */
+  .chat-message {
+    margin-bottom: 1rem; /* Smaller margin between messages */
+  }
+  
+  .chat-message .py-6 {
+    padding-top: 1rem !important; /* 16px instead of 24px */
+    padding-bottom: 1rem !important;
+  }
+  
+  /* Table wrapper for mobile scrolling */
+  .table-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    border-radius: 0.375rem;
+    background: rgba(20, 20, 20, 0.5);
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    /* Custom scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(185, 28, 28, 0.5) transparent;
+  }
+  
+  .table-wrapper::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .table-wrapper::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+  }
+  
+  .table-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(185, 28, 28, 0.5);
+    border-radius: 3px;
+  }
+  
+  .table-wrapper table {
+    margin: 0 !important;
+    width: auto;
+    min-width: 100%;
+    font-size: 0.75rem; /* 12px */
+    border-collapse: collapse;
+  }
+  
+  .table-wrapper th,
+  .table-wrapper td {
+    padding: 0.375rem 0.5rem; /* 6px 8px */
+    font-size: 0.75rem; /* 12px */
+    white-space: nowrap;
+    border: 1px solid rgba(185, 28, 28, 0.2);
+    color: #ffffff;
+  }
+  
+  .table-wrapper th {
+    background-color: #b91c1c;
+    font-weight: 600;
+    font-size: 0.7rem; /* 11.2px */
+  }
+}
+
+/* RTL layout adjustments */
+[dir='rtl'] .prose blockquote {
+  border-left: none;
+  border-right: 4px solid #dc2626;
+  padding-left: 0;
+  padding-right: 1em;
+}
+
+[dir='rtl'] .prose ul, 
+[dir='rtl'] .prose ol {
+  padding-left: 0;
+  padding-right: 1.5em;
+}
+
+/* Ensure proper initial positioning for RTL */
+html[dir='rtl'] {
+  text-align: right;
+}
+
+html[dir='rtl'] body {
+  text-align: right;
+}
+
+/* Disable transitions on initial load to prevent animation flash */
+.no-transition * {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Custom animations for better UX */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slideIn {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Improved focus styles */
+button:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #dc2626;
+  outline-offset: 2px;
 }

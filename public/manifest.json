@@ -1,6 +1,6 @@
 {
-  "short_name": "Misbara Chat",
-  "name": "Misbara Chat",
+  "short_name": "TanStack Chat", 
+  "name": "TanStack Chat Template",
   "icons": [
     {
       "src": "favicon.ico",

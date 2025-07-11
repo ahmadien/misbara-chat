@@ -24,7 +24,6 @@ const initialState: State = {
 export const store = new Store<State>(initialState)
 
 export const actions = {
-
   // Chat actions
   setConversations: (conversations: Conversation[]) => {
     store.setState(state => ({ ...state, conversations }))

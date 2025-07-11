@@ -3,6 +3,7 @@ import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import rehypeSanitize from 'rehype-sanitize'
 import rehypeHighlight from 'rehype-highlight'
+import { User } from 'lucide-react'
 import type { Message } from '../utils/ai'
 import { AiIcon } from './icons/AiIcons'
 
@@ -17,7 +18,7 @@ export const ChatMessage = ({ message }: { message: Message }) => (
           ? {
               borderLeft: '4px solid',
               borderImage:
-                'linear-gradient(to bottom, #ff00ff, #00ffff) 1',
+                'linear-gradient(to bottom, #ff0000, #ff8800, #ffff00, #00ff00, #00ffff, #0088ff, #8800ff) 1',
             }
           : undefined
       }
@@ -27,17 +28,26 @@ export const ChatMessage = ({ message }: { message: Message }) => (
         <AiIcon className="flex-shrink-0 w-12 h-12 ml-4" />
       ) : (
         <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 text-sm font-medium text-white bg-black rounded-lg">
-          Y
+          <User className="w-4 h-4" />
         </div>
       )}
       <div className="flex-1 min-w-0 mr-4">
-        <ReactMarkdown
-          className="prose dark:prose-invert max-w-none"
-          remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeRaw, rehypeSanitize, rehypeHighlight]}
-        >
-          {message.content}
-        </ReactMarkdown>
+        <div className="overflow-hidden">
+          <ReactMarkdown
+            className="prose dark:prose-invert max-w-none"
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeRaw, rehypeSanitize, rehypeHighlight]}
+            components={{
+              table: ({ children, ...props }) => (
+                <div className="table-wrapper overflow-x-auto md:overflow-x-visible">
+                  <table {...props}>{children}</table>
+                </div>
+              ),
+            }}
+          >
+            {message.content}
+          </ReactMarkdown>
+        </div>
       </div>
     </div>
   </div>

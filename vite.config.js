@@ -6,8 +6,8 @@ import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 
 const basePlugins = [
-  TanStackRouterVite({ autoCodeSplitting: true }),
-  viteReact(),
+  TanStackRouterVite({ autoCodeSplitting: true }), 
+  viteReact(), 
   tailwindcss(),
 ];
 
